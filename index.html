@@ -197,9 +197,68 @@ button:focus-visible{outline-color:#e0b5ff}
   .tab>.result-card,.manual-override>.result-card,.volume-card .result-card{border-color:#9c62bc}
 }
 
+
+/* Short, dismissible chemistry introduction. */
+.chem-intro{position:fixed;inset:0;margin:0;width:100%;max-width:none;height:100%;height:100dvh;max-height:none;border:0;padding:24px;color:#f5f0ff;background:radial-gradient(ellipse at 50% 42%,#391650 0,#130b20 45%,#070609 85%);overflow:auto;opacity:1;transition:opacity .3s ease}
+.chem-intro[open]{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.chem-intro::backdrop{background:#070609}
+.chem-intro.is-leaving{opacity:0}
+.intro-scene{width:min(310px,75vw);height:230px;overflow:visible}
+.intro-scene .intro-ring{fill:none;stroke:#ae73dc;stroke-width:1;opacity:.3;stroke-dasharray:3 10;transform-origin:160px 115px;animation:intro-turn 7s linear infinite}
+.intro-scene .intro-link{stroke:#d6a1ff;stroke-width:3;stroke-linecap:round;animation:intro-link-in 1.3s ease both}
+.intro-scene circle{fill:#2d163f;stroke:#d0a0ff;stroke-width:1.7}
+.intro-scene .intro-o circle{fill:#573074;stroke:#f0d1ff}
+.intro-scene text{fill:#faefff;text-anchor:middle;dominant-baseline:middle;font:600 19px system-ui}
+.intro-o{animation:intro-oxygen 1.25s cubic-bezier(.2,.7,.3,1) both}
+.intro-h-left{animation:intro-h-left 1.25s cubic-bezier(.2,.7,.3,1) both}
+.intro-h-right{animation:intro-h-right 1.25s cubic-bezier(.2,.7,.3,1) both}
+.intro-brand{font-size:.8rem;letter-spacing:.18em;font-weight:800;color:#d5a6f5;text-align:center}
+.intro-title{font-size:clamp(1.6rem,6vw,2.3rem);font-weight:750;letter-spacing:-.035em;text-align:center;margin:0}
+.intro-subtitle{font-size:.92rem;color:#bda8ce;text-align:center;margin:0}
+.intro-skip{margin-top:18px;min-height:44px;padding:10px 22px;color:#ead9ff;background:#291539;border:1px solid #754691;font-size:.85rem}
+@keyframes intro-oxygen{from{transform:translateY(-45px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes intro-h-left{from{transform:translate(-65px,35px);opacity:0}to{transform:translate(0,0);opacity:1}}
+@keyframes intro-h-right{from{transform:translate(65px,35px);opacity:0}to{transform:translate(0,0);opacity:1}}
+@keyframes intro-link-in{0%,40%{opacity:0}100%{opacity:.8}}
+@keyframes intro-turn{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.chem-intro,.chem-intro *{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
+
+<dialog id="chemIntro" class="chem-intro" aria-labelledby="introTitle" aria-describedby="introSubtitle">
+  <div class="intro-brand">WTR + DIVERSEY</div>
+  <svg class="intro-scene" viewBox="0 0 320 230" aria-hidden="true" focusable="false">
+    <ellipse class="intro-ring" cx="160" cy="115" rx="136" ry="98"/>
+    <path class="intro-link" d="M160 88 84 157 M160 88 236 157"/>
+    <g class="intro-o"><circle cx="160" cy="88" r="39"/><text x="160" y="90">O</text></g>
+    <g class="intro-h-left"><circle cx="84" cy="157" r="26"/><text x="84" y="159">H</text></g>
+    <g class="intro-h-right"><circle cx="236" cy="157" r="26"/><text x="236" y="159">H</text></g>
+  </svg>
+  <h2 class="intro-title" id="introTitle">Suyun dengesi, kimyanın uyumu.</h2>
+  <p class="intro-subtitle" id="introSubtitle">Havuz bakımında doğru hesap.</p>
+  <button class="intro-skip" id="introSkip" type="button" autofocus>Atla ve hesaplamaya geç</button>
+</dialog>
+<script>
+(() => {
+  const intro = document.getElementById("chemIntro");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (reducedMotion.matches || typeof intro.showModal !== "function") return;
+  let fadeTimer, closeTimer;
+  const finish = () => { if (intro.open) intro.close(); };
+  intro.addEventListener("close", () => {
+    clearTimeout(fadeTimer);
+    clearTimeout(closeTimer);
+  }, {once:true});
+  document.getElementById("introSkip").addEventListener("click", finish);
+  reducedMotion.addEventListener("change", event => { if (event.matches) finish(); });
+  intro.showModal();
+  fadeTimer = setTimeout(() => intro.classList.add("is-leaving"), 1800);
+  closeTimer = setTimeout(finish, 2150);
+})();
+</script>
+
 <header class="hero">
   <div class="chem-decor chem-bubbles" aria-hidden="true"><i style="--x:12%;--size:12px;--time:14s;--delay:-0s"></i><i style="--x:29%;--size:16px;--time:17s;--delay:-4s"></i><i style="--x:48%;--size:20px;--time:20s;--delay:-8s"></i><i style="--x:65%;--size:24px;--time:23s;--delay:-12s"></i><i style="--x:81%;--size:28px;--time:26s;--delay:-16s"></i><i style="--x:94%;--size:32px;--time:29s;--delay:-20s"></i></div>
   <div class="container">

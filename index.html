@@ -117,6 +117,25 @@ body:has(#chemMotion:not(:checked)) .chem-decor *{animation-play-state:paused!im
 @media(max-width:600px){.chem-molecule{width:150px;right:-15px;top:15px;opacity:.18}.chem-bubbles i:nth-child(n+5){display:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.chem-decor,.chem-decor *,.tab,.result-card{animation:none!important}button,.product-card{transition:none!important}.chem-motion{display:none}}
 
+
+/* Keep results beside the form on narrow screens, before long catalogs. */
+.layout > *, .grid > *, .brand-head > *{min-width:0}
+input,select{min-width:0;max-width:100%}
+.result-line{overflow-wrap:anywhere}
+.result-line > *{min-width:0}
+.result-line strong{max-width:65%}
+@media(max-width:850px){
+  .tab > .result-card,.manual-override > .result-card,.volume-card .result-card{
+    margin-top:16px;margin-bottom:16px;border-color:#327c8d;
+    box-shadow:0 8px 24px rgba(0,0,0,.15);
+  }
+}
+@media(max-width:600px){
+  .brand-head{flex-wrap:wrap}
+  .chem-motion{min-height:44px;gap:10px}
+  .chem-motion input{width:20px;height:20px}
+  .result-line{gap:12px}
+}
 </style>
 </head>
 <body>
@@ -435,7 +454,7 @@ body:has(#chemMotion:not(:checked)) .chem-decor *{animation-play-state:paused!im
     </section>
 
     <aside>
-      <section class="card result-card" id="resultCard" hidden>
+      <section class="card result-card" id="resultCard" role="status" aria-live="polite" aria-atomic="true" hidden>
         <div class="result-kicker">HESAP SONUCU</div>
         <h2 id="resultTitle"></h2>
         <div id="resultBody"></div>
@@ -468,7 +487,10 @@ const AUTO_GUIDES = {"WTR-PHML0025": {"mode": "instruction", "status": "Üretici
 const $ = (id) => document.getElementById(id);
 const fmt = (n, d=2) => Number(n).toLocaleString("tr-TR", {maximumFractionDigits:d});
 const clamp = (x, min, max) => Math.min(max, Math.max(min, x));
-const num = (id) => Number(String($(id).value).replace(",", "."));
+const num = (id) => {
+  const value = String($(id).value).trim().replace(",", ".");
+  return value === "" ? NaN : Number(value);
+};
 
 const CalcCore = Object.freeze({
   pureChlorineG(volumeM3, currentPpm, targetPpm) {
@@ -554,12 +576,30 @@ const CalcCore = Object.freeze({
 });
 
 
+let resultAnchor = null;
+function placeResult() {
+  const card = $("resultCard");
+  if (window.matchMedia("(max-width: 850px)").matches && resultAnchor?.isConnected) {
+    resultAnchor.after(card);
+  } else {
+    document.querySelector(".layout > aside").prepend(card);
+  }
+}
+window.matchMedia("(max-width: 850px)").addEventListener("change", placeResult);
+
 function showResult(title, lines, note="") {
+  const activeTab = document.querySelector(".tab:not([hidden])");
+  const focus = document.activeElement;
+  const focusedActions = focus?.closest(".actions");
+  resultAnchor = focusedActions && (activeTab?.contains(focusedActions) || focus.id === "dimCalc")
+    ? focusedActions
+    : activeTab?.querySelector(".actions");
+  placeResult();
   $("resultTitle").textContent = title;
   $("resultBody").innerHTML = lines.map(x => `<div class="result-line"><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join("");
   $("resultNote").textContent = note;
   $("resultCard").hidden = false;
-  $("resultCard").scrollIntoView({behavior:"smooth", block:"nearest"});
+  // Keep the current scroll position while showing the nearby result.
 }
 
 function warn(msg) {
@@ -577,6 +617,7 @@ function chlorineCalc() {
   const current = num("chlorCurrent"), target = num("chlorTarget"), ph = num("chlorPh");
   const product = $("chlorProduct").value;
   if (![current,target,ph].every(Number.isFinite)) return warn("Klor ve pH değerlerini kontrol edin.");
+  if (current < 0 || target < 0) return warn("Klor değerleri negatif olamaz.");
   if (ph < 6.5 || ph > 8.0) return warn("pH 6,5–8,0 aralığında olmalı.");
   const delta = target - current;
   if (delta <= 0) return warn("Hedef serbest klor mevcut değerden yüksek olmalı.");
@@ -804,8 +845,8 @@ function autoGuideCalc() {
     const high = range.highProductL;
     showResult(`${p.name} · seyreltme`, [
       ["Toplam solüsyon", `${fmt(total,2)} L`],
-      ["Ürün (%${g.lowPct})", `${fmt(low,2)} L`],
-      ["Ürün (%${g.highPct})", `${fmt(high,2)} L`],
+      [`Ürün (%${g.lowPct})`, `${fmt(low,2)} L`],
+      [`Ürün (%${g.highPct})`, `${fmt(high,2)} L`],
       ["Su aralığı", `${fmt(range.lowWaterL,2)}–${fmt(range.highWaterL,2)} L`]
     ], g.note || "");
     return;
@@ -955,6 +996,7 @@ function diverseyCalc() {
     const target = num("diverseyChlorTarget");
     const ph = num("diverseyPh");
     if (![current,target,ph].every(Number.isFinite)) return warn("Diversey klor ve pH değerlerini kontrol edin.");
+    if (current < 0 || target < 0) return warn("Klor değerleri negatif olamaz.");
     if (ph < 6.5 || ph > 8.2) return warn("pH değerini 6,5–8,2 aralığında girin.");
     const delta = target-current;
     if (delta <= 0) return warn("Hedef serbest klor mevcut değerden yüksek olmalı.");
@@ -994,6 +1036,7 @@ function diverseyCalc() {
     const current = num("diverseyPhCurrent");
     const target = num("diverseyPhTarget");
     if (![current,target].every(Number.isFinite)) return warn("pH değerlerini kontrol edin.");
+    if (current < 6.5 || current > 8.5 || target < 6.5 || target > 8.5) return warn("pH değerlerini 6,5–8,5 aralığında girin.");
     const drop = current - target;
     if (drop <= 0) return warn("Mevcut pH hedef pH'tan yüksek olmalı.");
     const steps = drop / p.referencePh;
@@ -1082,8 +1125,8 @@ function diverseyManualTargetSync() {
   const basis = $("diverseyManualBasis").value;
   const target = $("diverseyManualTarget");
   if (basis === "pool") {
-    const volume = requirePositiveVolume();
-    if (volume) target.value = volume;
+    const volume = num("volume");
+    if (Number.isFinite(volume) && volume > 0) target.value = volume;
     target.readOnly = true;
     $("diverseyManualHint").textContent = "Üstteki havuz hacmi otomatik kullanılır.";
   } else {
@@ -1196,6 +1239,7 @@ function renderCatalog() {
 }
 
 function setTab(name) {
+  $("resultCard").hidden = true;
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab===name));
   document.querySelectorAll(".tab").forEach(s => s.hidden = s.id !== `tab-${name}`);
   if (name==="catalog") renderCatalog();
@@ -1304,7 +1348,16 @@ document.addEventListener("DOMContentLoaded", () => {
   $("manualCalc").addEventListener("click", manualLabelCalc);
   $("manualBasis").addEventListener("change", manualTargetFromBasis);
   $("manualUsePool").addEventListener("click", () => { $("manualBasis").value = "pool"; manualTargetFromBasis(); });
-  $("volume").addEventListener("input", () => { if ($("manualBasis").value === "pool") manualTargetFromBasis(); if ($("diverseyManualBasis").value === "pool") diverseyManualTargetSync(); const g=getGuide($("manualProduct").value); if (g && (g.mode==="poolRatio" || g.mode==="winter")) autoGuideCalc(); const dp=selectedDiversey(); if (dp && ["activeChlorine","cahypo","phDropFixed","phDropRange","poolRatio","dualPoolRatio"].includes(dp.mode)) diverseyCalc(); });
+  $("volume").addEventListener("input", () => {
+    if ($("manualBasis").value === "pool") manualTargetFromBasis();
+    if ($("diverseyManualBasis").value === "pool") diverseyManualTargetSync();
+    const active = document.querySelector(".tab:not([hidden])")?.id;
+    const g = getGuide($("manualProduct").value);
+    if (active === "tab-manual" && g && ["poolRatio", "winter"].includes(g.mode)) autoGuideCalc();
+    const dp = selectedDiversey();
+    if (active === "tab-diversey" && dp && ["activeChlorine", "cahypo", "phDropFixed", "phDropRange", "poolRatio", "dualPoolRatio"].includes(dp.mode)) diverseyCalc();
+    if (["tab-chlor", "tab-ph", "tab-maint"].includes(active)) $("resultCard").hidden = true;
+  });
   $("dimCalc").addEventListener("click", calcDimensions);
   $("maintProduct").addEventListener("change", toggleMaintenanceExtra);
   $("catalogSearch").addEventListener("input", renderCatalog);

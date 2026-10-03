@@ -142,6 +142,61 @@ input,select{min-width:0;max-width:100%}
   input[inputmode="decimal"]{font-size:16px;min-height:48px;touch-action:manipulation}
   .tab:not([hidden]){animation:none}
 }
+
+/* Black & purple theme */
+:root{
+  --bg:#09070e;--panel:#14101e;--panel2:#20152f;
+  --text:#f5f0ff;--muted:#b8aacb;--accent:#c49aff;
+  --accent2:#e0b5ff;--line:#3c2852;--shadow:0 18px 50px rgba(0,0,0,.38)
+}
+body{background:radial-gradient(ellipse at top right,#35134f 0,#140b20 36%,#070609 78%);background-color:#070609}
+.card{background:linear-gradient(155deg,rgba(32,21,47,.97),rgba(15,11,22,.98));border-color:#3c2852}
+.hero .eyebrow,.brand-kicker,.result-kicker{color:#d6acff}
+.chip{background:#251333;border-color:#543066;color:#ead9ff}
+input,select{background:#0d0914;border-color:#49335d;color:#f5f0ff}
+input[readonly]{background:#181020}
+input:focus,select:focus{border-color:#c49aff;box-shadow:0 0 0 3px rgba(196,154,255,.16)}
+label{color:#dfd1ed}
+.primary,.diversey-primary{background:linear-gradient(135deg,#b78aff,#e3b6ff);color:#170b24}
+.secondary,.mini-action{background:#2b193d;border-color:#604079;color:#efe0ff}
+.mini-action:hover{background:#3b2352}
+.tab-btn{background:#160f21;border-color:#49335d;color:#c5b4d7}
+.tab-btn.active,.diversey-tab-btn.active{background:linear-gradient(135deg,#562985,#773cac);border-color:#c49aff;color:#fff}
+.diversey-tab-btn{border-color:#8855aa}
+.note{background:#181021;border-color:#533967;color:#d5c4e3}
+.note.warning{background:#24180e;border-color:#704e2e;color:#ffd4a2}
+.auto-status,.diversey-status{background:linear-gradient(180deg,#231333,#150d20);border-color:#70418d;color:#ead9ff}
+.auto-status span{color:#c8acdE}
+.auto-status strong{color:#fff}
+.manual-override{background:#110b1a;border-color:#503361}
+.manual-override summary,summary{color:#dbbaff}
+.product-card,.diversey-card{background:#120c1c;border-color:#40294f}
+.product-card code,.product-pack{color:#bb9dd1}
+.badges span,.brand-count{background:#2c173d;border-color:#63417b;color:#e0c3f3}
+.badges .ok,.badges .label-active{background:#352045;border-color:#694080;color:#ead0ff}
+.badges .muted{background:#282331;color:#c8bcd4}
+.engine-badge,.engine-badge.ok{background:#2e173e;border-color:#8850a6;color:#edceff}
+.engine-badge.bad{background:#361913;border-color:#8c4939;color:#ffd0c4}
+.result-line{border-color:#50345f}
+.result-note,.source-list{color:#bba8ca}
+.footer{color:#a38bb6}
+.chem-atom{fill:#261037;stroke:#c48cff}
+.chem-atom.core{fill:#44205c;stroke:#e0b2ff}
+.chem-bond,.chem-orbit{stroke:#c48cff}
+.chem-molecule text{fill:#f1dcff}
+.chem-molecule svg>circle:not(.chem-atom){fill:#d4a0ff}
+.chem-bubbles i{border-color:#c18aff55;background:radial-gradient(circle at 30% 25%,#dcb6ff30,transparent 60%)}
+.chem-motion input{accent-color:#c49aff}
+button:focus-visible{outline-color:#e0b5ff}
+@media(hover:hover){
+  .primary:hover{box-shadow:0 6px 24px #b878ff38}
+  .tab-btn:hover,.product-card:hover{border-color:#a16bc2}
+}
+@media(max-width:700px){.tabs{background:#110b1a!important;border-color:#49305d!important}}
+@media(max-width:850px){
+  .tab>.result-card,.manual-override>.result-card,.volume-card .result-card{border-color:#9c62bc}
+}
+
 </style>
 </head>
 <body>

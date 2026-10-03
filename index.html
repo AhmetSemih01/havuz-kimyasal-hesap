@@ -80,16 +80,56 @@ button{touch-action:manipulation}
   .actions button{width:100%;min-height:48px}
   input,select{font-size:16px}
 }
+
+/* Decorative chemistry layer. Calculator logic is unchanged. */
+.hero{position:relative;overflow:hidden;isolation:isolate}
+.hero .container{position:relative}
+.hero h1{max-width:790px;letter-spacing:-.045em}
+.hero p{max-width:720px}
+.chem-decor{pointer-events:none;user-select:none}
+.chem-molecule{position:absolute;width:260px;height:220px;right:-12px;top:0;z-index:-1;opacity:.68;animation:chem-float 9s ease-in-out infinite}
+.chem-molecule svg{width:100%;height:100%;overflow:visible}
+.chem-bond{stroke:#56d9e8;stroke-width:3;opacity:.55}
+.chem-atom{fill:#102e42;stroke:#67e6eb;stroke-width:1.5}
+.chem-atom.core{fill:#15465a;stroke:#86f5d9}
+.chem-molecule text{fill:#c8fff5;font:600 15px system-ui;text-anchor:middle;dominant-baseline:middle}
+.chem-orbit{fill:none;stroke:#56c9e5;stroke-width:1;stroke-dasharray:3 9;opacity:.38;transform-origin:130px 110px;animation:chem-orbit 45s linear infinite}
+.chem-bubbles{position:absolute;inset:0;overflow:hidden;z-index:-1}
+.chem-bubbles i{position:absolute;bottom:-35px;left:var(--x);width:var(--size);height:var(--size);border:1px solid #5ddedd55;border-radius:50%;background:radial-gradient(circle at 30% 25%,#a3ffff20,transparent 60%);animation:chem-rise var(--time) linear infinite;animation-delay:var(--delay)}
+.chip{backdrop-filter:blur(8px)}
+.chem-motion{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-size:.75rem;color:#9eb2c7;cursor:pointer;font-weight:500}
+.chem-motion input{width:15px;height:15px;accent-color:#58e0b6;margin:0;box-shadow:none}
+button{transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+button:active{transform:scale(.98)}
+button:focus-visible{outline:2px solid #86f5d9;outline-offset:4px}
+@media(hover:hover){.primary:hover{transform:translateY(-2px);box-shadow:0 6px 24px #3bc6ff25}.tab-btn:hover{border-color:#59cbd9}.product-card:hover{border-color:#3f7188}}
+.product-card{transition:border-color .2s ease}
+.tab:not([hidden]){animation:chem-reveal .3s ease both}
+.result-card:not([hidden]){animation:chem-reveal .35s ease both}
+body:has(#chemMotion:not(:checked)) .chem-decor,
+body:has(#chemMotion:not(:checked)) .chem-decor *{animation-play-state:paused!important}
+@keyframes chem-float{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(12px) rotate(4deg)}}
+@keyframes chem-orbit{to{transform:rotate(360deg)}}
+@keyframes chem-rise{0%{transform:translateY(0);opacity:0}12%{opacity:.7}88%{opacity:.45}100%{transform:translateY(-420px);opacity:0}}
+@keyframes chem-reveal{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:1000px){.hero h1,.hero p{padding-right:90px}}
+@media(max-width:999px){.chem-molecule{width:190px;right:0;top:10px;opacity:.2}}
+@media(max-width:600px){.chem-molecule{width:150px;right:-15px;top:15px;opacity:.18}.chem-bubbles i:nth-child(n+5){display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.chem-decor,.chem-decor *,.tab,.result-card{animation:none!important}button,.product-card{transition:none!important}.chem-motion{display:none}}
+
 </style>
 </head>
 <body>
 <header class="hero">
+  <div class="chem-decor chem-bubbles" aria-hidden="true"><i style="--x:12%;--size:12px;--time:14s;--delay:-0s"></i><i style="--x:29%;--size:16px;--time:17s;--delay:-4s"></i><i style="--x:48%;--size:20px;--time:20s;--delay:-8s"></i><i style="--x:65%;--size:24px;--time:23s;--delay:-12s"></i><i style="--x:81%;--size:28px;--time:26s;--delay:-16s"></i><i style="--x:94%;--size:32px;--time:29s;--delay:-20s"></i></div>
   <div class="container">
+    <div class="chem-decor chem-molecule" aria-hidden="true"><svg viewBox="0 0 260 220" focusable="false"><ellipse class="chem-orbit" cx="130" cy="110" rx="116" ry="83"/><path class="chem-bond" d="M130 108 60 160 M130 108 204 156"/><circle class="chem-atom core" cx="130" cy="108" r="36"/><circle class="chem-atom" cx="60" cy="160" r="23"/><circle class="chem-atom" cx="204" cy="156" r="23"/><text x="130" y="109">O</text><text x="60" y="161">H</text><text x="204" y="157">H</text><circle cx="26" cy="72" r="4" fill="#58e0b6" opacity=".6"/><circle cx="219" cy="52" r="6" fill="#3bc6ff" opacity=".5"/></svg></div>
     <div class="eyebrow">WTR + DIVERSEY · HAVUZ SUYU BAKIMI</div>
     <h1>Kimyasal Hesap Makinesi</h1>
     <p>Havuz hacmini ve ölçüm değerlerini gir. WTR ve Diversey/Divergard ürünlerinde doğrulanmış oranları hesapla; sabit doz bulunmayan ürünlerde tahmin yerine ürün rehberini kullan.</p>
     <div class="chips"><span class="chip">37 WTR ürün</span><span class="chip">21 Diversey ürün</span><span class="chip">Mobil uyumlu</span><span class="chip">Klor · pH · bakım</span></div>
     <div class="engine-status"><span id="selfTestBadge" class="engine-badge">Hesap motoru doğrulanıyor…</span></div>
+    <label class="chem-motion"><input id="chemMotion" type="checkbox" checked> Animasyon</label>
   </div>
 </header>
 

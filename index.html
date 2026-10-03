@@ -392,10 +392,7 @@ input,select{min-width:0;max-width:100%}
           <button class="primary diversey-primary" id="diverseyCalc">Diversey dozunu hesapla / göster</button>
         </div>
 
-        <div class="note">
-          CaHypo için güncel Diversey/Solenis havuz rehberindeki hacim bazlı rutin ve başlangıç/şok dozları gösterilir.
-          Dichlor ve TriChlor için sonuç aktif klor yüzdesine dayalı <strong>teorik ppm hesabıdır</strong>.
-        </div>
+        <div class="note" id="diverseyProductNote"></div>
 
         <details class="manual-override" id="diverseyManualOverride">
           <summary>Yedek: Diversey etiketindeki farklı oranı elle hesapla</summary>
@@ -963,6 +960,8 @@ function updateDiverseyUI(runNow=true) {
   if (!p) return;
 
   $("diverseyCategory").value = p.category;
+  $("diverseyProductNote").textContent = p.note || "";
+  $("diverseyProductNote").hidden = !p.note;
 
   const needsChlor = p.mode === "activeChlorine";
   const needsPhDrop = p.mode === "phDropFixed" || p.mode === "phDropRange";

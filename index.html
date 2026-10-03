@@ -136,6 +136,12 @@ input,select{min-width:0;max-width:100%}
   .chem-motion input{width:20px;height:20px}
   .result-line{gap:12px}
 }
+
+@media (pointer:coarse), (max-width:850px){
+  html{scroll-behavior:auto}
+  input[inputmode="decimal"]{font-size:16px;min-height:48px;touch-action:manipulation}
+  .tab:not([hidden]){animation:none}
+}
 </style>
 </head>
 <body>
@@ -157,15 +163,15 @@ input,select{min-width:0;max-width:100%}
     <h2>01 · Havuz hacmi</h2>
     <div class="grid">
       <label>Su hacmi (m³ / yaklaşık ton)
-        <input id="volume" type="number" min="0.1" step="0.1" value="60" inputmode="decimal">
+        <input id="volume" type="text" min="0.1" step="0.1" value="60" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
         <span class="hint">1 m³ = 1.000 L ≈ 1 ton su</span>
       </label>
       <details>
         <summary>Ölçülerden hacim hesapla</summary>
         <div class="grid three" style="margin-top:12px">
-          <label>Uzunluk (m)<input id="len" type="number" step="0.01" inputmode="decimal"></label>
-          <label>Genişlik (m)<input id="wid" type="number" step="0.01" inputmode="decimal"></label>
-          <label>Ort. derinlik (m)<input id="dep" type="number" step="0.01" inputmode="decimal"></label>
+          <label>Uzunluk (m)<input id="len" type="text" step="0.01" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
+          <label>Genişlik (m)<input id="wid" type="text" step="0.01" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
+          <label>Ort. derinlik (m)<input id="dep" type="text" step="0.01" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
         </div>
         <div class="actions"><button class="secondary" id="dimCalc">Hacmi hesapla</button></div>
       </details>
@@ -195,9 +201,9 @@ input,select{min-width:0;max-width:100%}
               <option value="ks12">WTR KS · %12 sıvı klor</option>
             </select>
           </label>
-          <label>Ölçülen pH (6,5–8,0)<input id="chlorPh" type="number" min="6.5" max="8" step="0.01" value="7.40" inputmode="decimal"></label>
-          <label>Mevcut serbest klor (ppm)<input id="chlorCurrent" type="number" min="0" step="0.1" value="0.5" inputmode="decimal"></label>
-          <label>Hedef serbest klor (ppm)<input id="chlorTarget" type="number" min="0" step="0.1" value="2" inputmode="decimal"></label>
+          <label>Ölçülen pH (6,5–8,0)<input id="chlorPh" type="text" min="6.5" max="8" step="0.01" value="7.40" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
+          <label>Mevcut serbest klor (ppm)<input id="chlorCurrent" type="text" min="0" step="0.1" value="0.5" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
+          <label>Hedef serbest klor (ppm)<input id="chlorTarget" type="text" min="0" step="0.1" value="2" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
         </div>
         <div class="actions"><button class="primary" id="chlorCalc">Klor dozunu hesapla</button></div>
         <div class="note">Şoklama için hedef ppm değerini siz girersiniz. WTR KS hesabında önceki isteğiniz doğrultusunda yoğunluk alanı yoktur ve %12 aktif klor = 120 g/L kabul edilir.</div>
@@ -213,8 +219,8 @@ input,select{min-width:0;max-width:100%}
               <option value="toz">WTR TOZ pH MINUS</option>
             </select>
           </label>
-          <label>Mevcut pH (6,5–8,0)<input id="phCurrent" type="number" min="6.5" max="8" step="0.01" value="7.80" inputmode="decimal"></label>
-          <label>Hedef pH (6,5–8,0)<input id="phTarget" type="number" min="6.5" max="8" step="0.01" value="7.40" inputmode="decimal"></label>
+          <label>Mevcut pH (6,5–8,0)<input id="phCurrent" type="text" min="6.5" max="8" step="0.01" value="7.80" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
+          <label>Hedef pH (6,5–8,0)<input id="phTarget" type="text" min="6.5" max="8" step="0.01" value="7.40" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
         </div>
         <div class="actions"><button class="primary" id="phCalc">pH dozunu hesapla</button></div>
         <div class="note">Önceki tercihiniz korunmuştur: pH düşürme hesabında ayrıca alkalinite giriş alanı kullanılmaz. WTR PH MINUS L katalogda yer alır fakat pH hesap ürünlerinden çıkarılmıştır.</div>
@@ -243,9 +249,9 @@ input,select{min-width:0;max-width:100%}
               <option value="coolClean">WTR COOL CLEAN · 1:10'a kadar</option>
             </select>
           </label>
-          <label id="filterWaterWrap" hidden>Filtre içindeki su (L)<input id="filterWater" type="number" min="0" step="1" value="100" inputmode="decimal"></label>
-          <label id="solutionVolumeWrap" hidden>Hazırlanacak toplam solüsyon (L)<input id="solutionVolume" type="number" min="0" step="0.1" value="10" inputmode="decimal"></label>
-          <label id="coolProductWrap" hidden>Kullanılacak ürün (L)<input id="coolProduct" type="number" min="0" step="0.1" value="1" inputmode="decimal"></label>
+          <label id="filterWaterWrap" hidden>Filtre içindeki su (L)<input id="filterWater" type="text" min="0" step="1" value="100" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
+          <label id="solutionVolumeWrap" hidden>Hazırlanacak toplam solüsyon (L)<input id="solutionVolume" type="text" min="0" step="0.1" value="10" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
+          <label id="coolProductWrap" hidden>Kullanılacak ürün (L)<input id="coolProduct" type="text" min="0" step="0.1" value="1" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
         </div>
         <div class="actions"><button class="primary" id="maintCalc">Bakım dozunu hesapla</button></div>
       </section>
@@ -262,12 +268,12 @@ input,select{min-width:0;max-width:100%}
           </label>
 
           <label id="autoFilterWrap" hidden>Filtre içindeki su (L)
-            <input id="autoFilterWater" type="number" min="1" step="1" value="250" inputmode="decimal">
+            <input id="autoFilterWater" type="text" min="1" step="1" value="250" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
             <span class="hint">SCALE F için otomatik oran bu hacme göre hesaplanır.</span>
           </label>
 
           <label id="autoSolutionWrap" hidden>Hazırlanacak toplam solüsyon (L)
-            <input id="autoSolutionVolume" type="number" min="0.1" step="0.1" value="10" inputmode="decimal">
+            <input id="autoSolutionVolume" type="text" min="0.1" step="0.1" value="10" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
             <span class="hint">SCALE NF için %20–25 çalışma konsantrasyonu hesaplanır.</span>
           </label>
         </div>
@@ -286,7 +292,7 @@ input,select{min-width:0;max-width:100%}
           <summary>Yedek: yeni veya farklı bir etiket oranını elle gir</summary>
           <div class="grid" style="margin-top:12px">
             <label>Etikette yazan ürün miktarı
-              <input id="manualDoseAmount" type="number" min="0" step="0.01" value="1" inputmode="decimal">
+              <input id="manualDoseAmount" type="text" min="0" step="0.01" value="1" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
             </label>
             <label>Ürün miktarı birimi
               <select id="manualDoseUnit">
@@ -299,7 +305,7 @@ input,select{min-width:0;max-width:100%}
               </select>
             </label>
             <label>Etiketteki referans miktar
-              <input id="manualReferenceAmount" type="number" min="0.001" step="0.01" value="100" inputmode="decimal">
+              <input id="manualReferenceAmount" type="text" min="0.001" step="0.01" value="100" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
             </label>
             <label>Referans türü
               <select id="manualBasis">
@@ -311,7 +317,7 @@ input,select{min-width:0;max-width:100%}
               </select>
             </label>
             <label id="manualTargetWrap">Hedef miktar
-              <input id="manualTargetAmount" type="number" min="0.001" step="0.01" value="60" inputmode="decimal">
+              <input id="manualTargetAmount" type="text" min="0.001" step="0.01" value="60" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
               <span class="hint" id="manualTargetHint">Havuz suyu için üstteki hacim otomatik kullanılır.</span>
             </label>
           </div>
@@ -355,29 +361,29 @@ input,select{min-width:0;max-width:100%}
 
         <div class="grid" id="diverseyChlorFields" hidden>
           <label>Mevcut serbest klor (ppm)
-            <input id="diverseyChlorCurrent" type="number" min="0" step="0.1" value="0.5" inputmode="decimal">
+            <input id="diverseyChlorCurrent" type="text" min="0" step="0.1" value="0.5" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
           </label>
           <label>Hedef serbest klor (ppm)
-            <input id="diverseyChlorTarget" type="number" min="0" step="0.1" value="2" inputmode="decimal">
+            <input id="diverseyChlorTarget" type="text" min="0" step="0.1" value="2" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
           </label>
           <label>Ölçülen pH
-            <input id="diverseyPh" type="number" min="6.5" max="8.2" step="0.01" value="7.40" inputmode="decimal">
+            <input id="diverseyPh" type="text" min="6.5" max="8.2" step="0.01" value="7.40" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
             <span class="hint">Serbest klor hesabında pH yalnızca kontrol bilgisi olarak gösterilir.</span>
           </label>
         </div>
 
         <div class="grid" id="diverseyPhDropFields" hidden>
           <label>Mevcut pH
-            <input id="diverseyPhCurrent" type="number" min="6.5" max="8.5" step="0.01" value="7.80" inputmode="decimal">
+            <input id="diverseyPhCurrent" type="text" min="6.5" max="8.5" step="0.01" value="7.80" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
           </label>
           <label>Hedef pH
-            <input id="diverseyPhTarget" type="number" min="6.5" max="8.5" step="0.01" value="7.40" inputmode="decimal">
+            <input id="diverseyPhTarget" type="text" min="6.5" max="8.5" step="0.01" value="7.40" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
           </label>
         </div>
 
         <div class="grid" id="diverseySolutionFields" hidden>
           <label>Hazırlanacak toplam temizlik çözeltisi (L)
-            <input id="diverseySolutionVolume" type="number" min="0.1" step="0.1" value="10" inputmode="decimal">
+            <input id="diverseySolutionVolume" type="text" min="0.1" step="0.1" value="10" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
             <span class="hint">Filter Clean için %20–50 çalışma çözeltisi hesaplanır.</span>
           </label>
         </div>
@@ -395,7 +401,7 @@ input,select{min-width:0;max-width:100%}
           <summary>Yedek: Diversey etiketindeki farklı oranı elle hesapla</summary>
           <div class="grid" style="margin-top:12px">
             <label>Etikette yazan ürün miktarı
-              <input id="diverseyManualDose" type="number" min="0" step="0.01" value="1" inputmode="decimal">
+              <input id="diverseyManualDose" type="text" min="0" step="0.01" value="1" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
             </label>
             <label>Birim
               <select id="diverseyManualUnit">
@@ -408,7 +414,7 @@ input,select{min-width:0;max-width:100%}
               </select>
             </label>
             <label>Etiket referansı
-              <input id="diverseyManualReference" type="number" min="0.001" step="0.01" value="100" inputmode="decimal">
+              <input id="diverseyManualReference" type="text" min="0.001" step="0.01" value="100" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
             </label>
             <label>Referans türü
               <select id="diverseyManualBasis">
@@ -420,7 +426,7 @@ input,select{min-width:0;max-width:100%}
               </select>
             </label>
             <label>Hedef miktar
-              <input id="diverseyManualTarget" type="number" min="0.001" step="0.01" value="60" inputmode="decimal">
+              <input id="diverseyManualTarget" type="text" min="0.001" step="0.01" value="60" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
               <span class="hint" id="diverseyManualHint">Havuz suyu seçiliyken üstteki hacim otomatik kullanılır.</span>
             </label>
           </div>
@@ -580,9 +586,10 @@ let resultAnchor = null;
 function placeResult() {
   const card = $("resultCard");
   if (window.matchMedia("(max-width: 850px)").matches && resultAnchor?.isConnected) {
-    resultAnchor.after(card);
+    if (resultAnchor.nextElementSibling !== card) resultAnchor.after(card);
   } else {
-    document.querySelector(".layout > aside").prepend(card);
+    const aside = document.querySelector(".layout > aside");
+    if (card.parentElement !== aside) aside.prepend(card);
   }
 }
 window.matchMedia("(max-width: 850px)").addEventListener("change", placeResult);
@@ -1337,6 +1344,13 @@ function runGoldenTests() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Text fields keep the native decimal keyboard without number-spinner editing quirks.
+  // Select the existing value synchronously on focus; never steal focus or cancel touch events.
+  document.querySelectorAll('input[inputmode="decimal"]').forEach(input => {
+    input.addEventListener("focus", () => {
+      if (!input.readOnly) input.select();
+    });
+  });
   document.querySelectorAll(".tab-btn").forEach(b => b.addEventListener("click", () => setTab(b.dataset.tab)));
   $("chlorCalc").addEventListener("click", chlorineCalc);
   $("phCalc").addEventListener("click", phCalc);

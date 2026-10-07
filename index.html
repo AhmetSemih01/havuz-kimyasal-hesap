@@ -1,1540 +1,176 @@
 <!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#07111e">
-  <title>WTR + Diversey Havuz Kimyasal Hesap Makinesi v6.0</title>
-  <style>[hidden]{display:none !important}
-
-:root{--bg:#07111e;--panel:#0d1b2a;--panel2:#10243a;--text:#eef6ff;--muted:#9eb2c7;--accent:#3bc6ff;--accent2:#58e0b6;--danger:#ffb36a;--line:#223b53;--shadow:0 18px 50px rgba(0,0,0,.28)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at top right,#12314d 0,#07111e 38%,#050b12 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.container{width:min(1120px,calc(100% - 28px));margin:auto}.hero{padding:34px 0 20px}.eyebrow{color:var(--accent2);font-weight:800;letter-spacing:.12em;font-size:.78rem}.hero h1{font-size:clamp(2rem,6vw,4rem);margin:.3rem 0 .5rem;line-height:1}.hero p{color:var(--muted);max-width:760px;font-size:1.02rem}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.chip{background:#0c2538;border:1px solid #1f4967;padding:7px 10px;border-radius:999px;color:#ccecff;font-size:.82rem}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}.card{background:linear-gradient(180deg,rgba(16,36,58,.96),rgba(10,25,40,.96));border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow)}.card h2,.card h3{margin-top:0}.volume-card{margin-bottom:18px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-label{display:grid;gap:7px;color:#c8d9e8;font-size:.88rem;font-weight:650}.hint{color:var(--muted);font-size:.78rem;font-weight:450}input,select,button{font:inherit}input,select{width:100%;background:#071522;border:1px solid #2a455c;color:var(--text);padding:12px 13px;border-radius:12px;outline:none}input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,198,255,.12)}button{border:0;border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer}.primary{background:linear-gradient(135deg,var(--accent),#6be0ff);color:#04101a}.secondary{background:#173047;color:#dff4ff;border:1px solid #2b506c}.actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-.tabs{display:flex;gap:8px;overflow:auto;padding:4px 0 12px;scrollbar-width:thin}.tab-btn{white-space:nowrap;background:#0d1b2a;color:#aec4d6;border:1px solid #223b53}.tab-btn.active{background:#173b55;color:white;border-color:#3bc6ff}.tab[hidden]{display:none}.tab .section-title{margin:4px 0 14px}.note{padding:12px;border:1px solid #36516a;background:#0b1b2a;border-radius:12px;color:#bcd0df;font-size:.86rem;margin-top:12px}.warning{border-color:#704e2e;background:#24180e;color:#ffd4a2}
-.result-card{position:sticky;top:14px}.result-card[hidden]{display:none}.result-kicker{font-size:.75rem;color:var(--accent2);letter-spacing:.12em;font-weight:800}.result-line{display:flex;justify-content:space-between;gap:18px;padding:10px 0;border-bottom:1px dashed #294158}.result-line span{color:var(--muted)}.result-line strong{text-align:right}.result-note{color:#adc0d0;font-size:.84rem;line-height:1.45;margin-bottom:0}
-.catalog-toolbar{display:grid;grid-template-columns:1.4fr 1fr;gap:10px;margin-bottom:12px}.catalog-meta{color:var(--muted);font-size:.82rem;margin-bottom:12px}.catalog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product-card{background:#081827;border:1px solid #20394f;border-radius:14px;padding:14px}.product-card h3{font-size:.96rem;margin:9px 0}.product-card code{color:#93cde8;font-size:.78rem}.badges{display:flex;gap:6px;flex-wrap:wrap}.badges span{font-size:.69rem;padding:4px 7px;border-radius:999px;background:#112d42;color:#b9d8e9}.badges .ok{background:#10362f;color:#9ff3d5}.badges .muted{background:#2a2d33;color:#c2c6cc}
-details{margin-top:12px}summary{cursor:pointer;color:#b9eaff;font-weight:700}.footer{color:#7f94a7;font-size:.78rem;padding:24px 0 40px;line-height:1.55}.source-list{margin:8px 0 0;padding-left:18px;color:#9db2c3}
-@media(max-width:850px){.layout{grid-template-columns:1fr}.result-card{position:static}.catalog-grid{grid-template-columns:1fr}}
-@media(max-width:600px){.container{width:min(100% - 18px,1120px)}.hero{padding-top:24px}.grid,.grid.three,.catalog-toolbar{grid-template-columns:1fr}.card{border-radius:16px;padding:14px}.tabs{margin-left:-2px;margin-right:-2px}.hero p{font-size:.94rem}}
-
-.hint-block{color:var(--muted);line-height:1.55;margin-top:-4px;margin-bottom:14px}
-.badges .label-active{background:#173a53;color:#bde9ff;border:1px solid #2d6688}
-.mini-action{width:100%;margin-top:12px;background:#12314a;color:#dff5ff;border:1px solid #285878;padding:9px 10px}
-.mini-action:hover{background:#19415f}
-input[readonly]{opacity:.82;background:#0a1b29}
-
-.auto-status{margin-top:14px;padding:14px;border-radius:14px;border:1px solid #28506d;background:#0a1c2c;color:#cfe7f5;line-height:1.5}
-.auto-status strong{color:#fff}
-.auto-status span{color:#9fc4da}
-.manual-override{margin-top:14px;border:1px solid #27445d;border-radius:14px;padding:12px;background:#081725}
-.manual-override summary{color:#a9ddf7}
-
-.diversey-tab-btn{border-color:#4d8ab4}
-.diversey-tab-btn.active{background:linear-gradient(135deg,#17547a,#1b6a8f);border-color:#5bd6ff}
-.brand-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
-.brand-kicker{font-size:.75rem;letter-spacing:.13em;font-weight:900;color:#77d9ff;margin-bottom:5px}
-.brand-count{font-size:.78rem;padding:6px 9px;border-radius:999px;background:#102c43;color:#aee8ff;border:1px solid #285a79;white-space:nowrap}
-.diversey-status{border-color:#2d6181;background:linear-gradient(180deg,#0b2133,#081a29)}
-.diversey-primary{background:linear-gradient(135deg,#5bd6ff,#76efd4)}
-.diversey-catalog-head{display:grid;grid-template-columns:1fr minmax(240px,360px);gap:12px;align-items:center;margin-top:22px;margin-bottom:12px}
-.diversey-catalog-head h3{margin:0}
-.diversey-card{border-color:#254b66}
-.product-pack{margin-top:7px;color:#8fb5ca;font-size:.76rem}
-@media(max-width:600px){
-  .brand-head{align-items:flex-start}
-  .diversey-catalog-head{grid-template-columns:1fr}
-}
-
-
-/* v6.0 Golden — mobile touch-safe */
-.engine-status{margin-top:10px}
-.engine-badge{display:inline-flex;align-items:center;min-height:34px;padding:6px 10px;border-radius:999px;font-size:.76rem;font-weight:800;border:1px solid #34566e;background:#0a2030;color:#b9d7e9}
-.engine-badge.ok{border-color:#287761;background:#0c3028;color:#aaf4d7}
-.engine-badge.bad{border-color:#8c4939;background:#361913;color:#ffd0c4}
-.chem-ambient,.molecule,.chem-orb{pointer-events:none!important}
-button{touch-action:manipulation}
-@media(max-width:700px){
-  .tabs{
-    display:grid!important;
-    grid-template-columns:repeat(2,minmax(0,1fr))!important;
-    gap:8px!important;
-    overflow:visible!important;
-    position:relative!important;
-    top:auto!important;
-    margin:0 0 14px!important;
-    padding:7px!important;
-    background:#081725!important;
-    border:1px solid #233e54!important;
-    border-radius:14px!important;
-  }
-  .tab-btn{
-    width:100%!important;
-    min-width:0!important;
-    min-height:48px!important;
-    white-space:normal!important;
-    padding:10px 8px!important;
-  }
-  .actions{display:grid;grid-template-columns:1fr}
-  .actions button{width:100%;min-height:48px}
-  input,select{font-size:16px}
-}
-
-/* Decorative chemistry layer. Calculator logic is unchanged. */
-.hero{position:relative;overflow:hidden;isolation:isolate}
-.hero .container{position:relative}
-.hero h1{max-width:790px;letter-spacing:-.045em}
-.hero p{max-width:720px}
-.chem-decor{pointer-events:none;user-select:none}
-.chem-molecule{position:absolute;width:260px;height:220px;right:-12px;top:0;z-index:-1;opacity:.68;animation:chem-float 9s ease-in-out infinite}
-.chem-molecule svg{width:100%;height:100%;overflow:visible}
-.chem-bond{stroke:#56d9e8;stroke-width:3;opacity:.55}
-.chem-atom{fill:#102e42;stroke:#67e6eb;stroke-width:1.5}
-.chem-atom.core{fill:#15465a;stroke:#86f5d9}
-.chem-molecule text{fill:#c8fff5;font:600 15px system-ui;text-anchor:middle;dominant-baseline:middle}
-.chem-orbit{fill:none;stroke:#56c9e5;stroke-width:1;stroke-dasharray:3 9;opacity:.38;transform-origin:130px 110px;animation:chem-orbit 45s linear infinite}
-.chem-bubbles{position:absolute;inset:0;overflow:hidden;z-index:-1}
-.chem-bubbles i{position:absolute;bottom:-35px;left:var(--x);width:var(--size);height:var(--size);border:1px solid #5ddedd55;border-radius:50%;background:radial-gradient(circle at 30% 25%,#a3ffff20,transparent 60%);animation:chem-rise var(--time) linear infinite;animation-delay:var(--delay)}
-.chip{backdrop-filter:blur(8px)}
-.chem-motion{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-size:.75rem;color:#9eb2c7;cursor:pointer;font-weight:500}
-.chem-motion input{width:15px;height:15px;accent-color:#58e0b6;margin:0;box-shadow:none}
-button{transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
-button:active{transform:scale(.98)}
-button:focus-visible{outline:2px solid #86f5d9;outline-offset:4px}
-@media(hover:hover){.primary:hover{transform:translateY(-2px);box-shadow:0 6px 24px #3bc6ff25}.tab-btn:hover{border-color:#59cbd9}.product-card:hover{border-color:#3f7188}}
-.product-card{transition:border-color .2s ease}
-.tab:not([hidden]){animation:chem-reveal .3s ease both}
-.result-card:not([hidden]){animation:chem-reveal .35s ease both}
-body:has(#chemMotion:not(:checked)) .chem-decor,
-body:has(#chemMotion:not(:checked)) .chem-decor *{animation-play-state:paused!important}
-@keyframes chem-float{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(12px) rotate(4deg)}}
-@keyframes chem-orbit{to{transform:rotate(360deg)}}
-@keyframes chem-rise{0%{transform:translateY(0);opacity:0}12%{opacity:.7}88%{opacity:.45}100%{transform:translateY(-420px);opacity:0}}
-@keyframes chem-reveal{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
-@media(min-width:1000px){.hero h1,.hero p{padding-right:90px}}
-@media(max-width:999px){.chem-molecule{width:190px;right:0;top:10px;opacity:.2}}
-@media(max-width:600px){.chem-molecule{width:150px;right:-15px;top:15px;opacity:.18}.chem-bubbles i:nth-child(n+5){display:none}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.chem-decor,.chem-decor *,.tab,.result-card{animation:none!important}button,.product-card{transition:none!important}.chem-motion{display:none}}
-
-
-/* Keep results beside the form on narrow screens, before long catalogs. */
-.layout > *, .grid > *, .brand-head > *{min-width:0}
-input,select{min-width:0;max-width:100%}
-.result-line{overflow-wrap:anywhere}
-.result-line > *{min-width:0}
-.result-line strong{max-width:65%}
-@media(max-width:850px){
-  .tab > .result-card,.manual-override > .result-card,.volume-card .result-card{
-    margin-top:16px;margin-bottom:16px;border-color:#327c8d;
-    box-shadow:0 8px 24px rgba(0,0,0,.15);
-  }
-}
-@media(max-width:600px){
-  .brand-head{flex-wrap:wrap}
-  .chem-motion{min-height:44px;gap:10px}
-  .chem-motion input{width:20px;height:20px}
-  .result-line{gap:12px}
-}
-
-@media (pointer:coarse), (max-width:850px){
-  html{scroll-behavior:auto}
-  input[inputmode="decimal"]{font-size:16px;min-height:48px;touch-action:manipulation}
-  .tab:not([hidden]){animation:none}
-}
-
-/* Black & purple theme */
-:root{
-  --bg:#09070e;--panel:#14101e;--panel2:#20152f;
-  --text:#f5f0ff;--muted:#b8aacb;--accent:#c49aff;
-  --accent2:#e0b5ff;--line:#3c2852;--shadow:0 18px 50px rgba(0,0,0,.38)
-}
-body{background:radial-gradient(ellipse at top right,#35134f 0,#140b20 36%,#070609 78%);background-color:#070609}
-.card{background:linear-gradient(155deg,rgba(32,21,47,.97),rgba(15,11,22,.98));border-color:#3c2852}
-.hero .eyebrow,.brand-kicker,.result-kicker{color:#d6acff}
-.chip{background:#251333;border-color:#543066;color:#ead9ff}
-input,select{background:#0d0914;border-color:#49335d;color:#f5f0ff}
-input[readonly]{background:#181020}
-input:focus,select:focus{border-color:#c49aff;box-shadow:0 0 0 3px rgba(196,154,255,.16)}
-label{color:#dfd1ed}
-.primary,.diversey-primary{background:linear-gradient(135deg,#b78aff,#e3b6ff);color:#170b24}
-.secondary,.mini-action{background:#2b193d;border-color:#604079;color:#efe0ff}
-.mini-action:hover{background:#3b2352}
-.tab-btn{background:#160f21;border-color:#49335d;color:#c5b4d7}
-.tab-btn.active,.diversey-tab-btn.active{background:linear-gradient(135deg,#562985,#773cac);border-color:#c49aff;color:#fff}
-.diversey-tab-btn{border-color:#8855aa}
-.note{background:#181021;border-color:#533967;color:#d5c4e3}
-.note.warning{background:#24180e;border-color:#704e2e;color:#ffd4a2}
-.auto-status,.diversey-status{background:linear-gradient(180deg,#231333,#150d20);border-color:#70418d;color:#ead9ff}
-.auto-status span{color:#c8acdE}
-.auto-status strong{color:#fff}
-.manual-override{background:#110b1a;border-color:#503361}
-.manual-override summary,summary{color:#dbbaff}
-.product-card,.diversey-card{background:#120c1c;border-color:#40294f}
-.product-card code,.product-pack{color:#bb9dd1}
-.badges span,.brand-count{background:#2c173d;border-color:#63417b;color:#e0c3f3}
-.badges .ok,.badges .label-active{background:#352045;border-color:#694080;color:#ead0ff}
-.badges .muted{background:#282331;color:#c8bcd4}
-.engine-badge,.engine-badge.ok{background:#2e173e;border-color:#8850a6;color:#edceff}
-.engine-badge.bad{background:#361913;border-color:#8c4939;color:#ffd0c4}
-.result-line{border-color:#50345f}
-.result-note,.source-list{color:#bba8ca}
-.footer{color:#a38bb6}
-.chem-atom{fill:#261037;stroke:#c48cff}
-.chem-atom.core{fill:#44205c;stroke:#e0b2ff}
-.chem-bond,.chem-orbit{stroke:#c48cff}
-.chem-molecule text{fill:#f1dcff}
-.chem-molecule svg>circle:not(.chem-atom){fill:#d4a0ff}
-.chem-bubbles i{border-color:#c18aff55;background:radial-gradient(circle at 30% 25%,#dcb6ff30,transparent 60%)}
-.chem-motion input{accent-color:#c49aff}
-button:focus-visible{outline-color:#e0b5ff}
-@media(hover:hover){
-  .primary:hover{box-shadow:0 6px 24px #b878ff38}
-  .tab-btn:hover,.product-card:hover{border-color:#a16bc2}
-}
-@media(max-width:700px){.tabs{background:#110b1a!important;border-color:#49305d!important}}
-@media(max-width:850px){
-  .tab>.result-card,.manual-override>.result-card,.volume-card .result-card{border-color:#9c62bc}
-}
-
-
-/* Short, dismissible chemistry introduction. */
-.chem-intro{position:fixed;inset:0;margin:0;width:100%;max-width:none;height:100%;height:100dvh;max-height:none;border:0;padding:24px;color:#f5f0ff;background:radial-gradient(ellipse at 50% 42%,#391650 0,#130b20 45%,#070609 85%);overflow:auto;opacity:1;transition:opacity .3s ease}
-.chem-intro[open]{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
-.chem-intro::backdrop{background:#070609}
-.chem-intro.is-leaving{opacity:0}
-.intro-scene{width:min(310px,75vw);height:230px;overflow:visible}
-.intro-scene .intro-ring{fill:none;stroke:#ae73dc;stroke-width:1;opacity:.3;stroke-dasharray:3 10;transform-origin:160px 115px;animation:intro-turn 7s linear infinite}
-.intro-scene .intro-link{stroke:#d6a1ff;stroke-width:3;stroke-linecap:round;animation:intro-link-in 1.3s ease both}
-.intro-scene circle{fill:#2d163f;stroke:#d0a0ff;stroke-width:1.7}
-.intro-scene .intro-o circle{fill:#573074;stroke:#f0d1ff}
-.intro-scene text{fill:#faefff;text-anchor:middle;dominant-baseline:middle;font:600 19px system-ui}
-.intro-o{animation:intro-oxygen 1.25s cubic-bezier(.2,.7,.3,1) both}
-.intro-h-left{animation:intro-h-left 1.25s cubic-bezier(.2,.7,.3,1) both}
-.intro-h-right{animation:intro-h-right 1.25s cubic-bezier(.2,.7,.3,1) both}
-.intro-brand{font-size:.8rem;letter-spacing:.18em;font-weight:800;color:#d5a6f5;text-align:center}
-.intro-title{font-size:clamp(1.6rem,6vw,2.3rem);font-weight:750;letter-spacing:-.035em;text-align:center;margin:0}
-.intro-subtitle{font-size:.92rem;color:#bda8ce;text-align:center;margin:0}
-.intro-skip{margin-top:18px;min-height:44px;padding:10px 22px;color:#ead9ff;background:#291539;border:1px solid #754691;font-size:.85rem}
-@keyframes intro-oxygen{from{transform:translateY(-45px);opacity:0}to{transform:translateY(0);opacity:1}}
-@keyframes intro-h-left{from{transform:translate(-65px,35px);opacity:0}to{transform:translate(0,0);opacity:1}}
-@keyframes intro-h-right{from{transform:translate(65px,35px);opacity:0}to{transform:translate(0,0);opacity:1}}
-@keyframes intro-link-in{0%,40%{opacity:0}100%{opacity:.8}}
-@keyframes intro-turn{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.chem-intro,.chem-intro *{animation:none!important;transition:none!important}}
-
-
-/* All calculator sections stay visible without horizontal scrolling. */
-.tabs{
-  display:grid!important;
-  grid-template-columns:repeat(12,minmax(0,1fr))!important;
-  gap:8px!important;overflow:visible!important;
-  margin:0 0 18px!important;padding:8px!important;
-  background:#110b1a!important;border:1px solid #49305d!important;
-  border-radius:16px!important
-}
-.tabs .tab-btn{
-  grid-column:span 3;width:100%!important;min-width:0!important;
-  min-height:48px!important;white-space:normal!important;
-  padding:11px 8px!important;line-height:1.3;
-  display:flex;align-items:center;justify-content:center;text-align:center
-}
-.tabs .tab-btn:nth-child(n+5){grid-column:span 4}
-@media(max-width:600px){
-  .tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  .tabs .tab-btn,.tabs .tab-btn:nth-child(n+5){grid-column:span 1}
-  .tabs .tab-btn:last-child{grid-column:1 / -1}
-}
-
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#100b19">
+<title>Havuz Kimyasal Hesap Makinesi · v7</title>
+<style>
+:root{color-scheme:dark;--bg:#100b19;--panel:#1b1428;--border:#423253;--text:#f5efff;--muted:#c0aecf;--purple:#c6a1ff;--green:#99e9cf;--amber:#ffd4a1}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 88% 0,#382044 0,transparent 48%),var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button,a,input,select{touch-action:manipulation}a{color:var(--purple);text-underline-offset:4px}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--green);outline-offset:3px}.wrap{width:min(1180px,calc(100% - 40px));margin:auto}header{padding:26px 0 42px;border-bottom:1px solid var(--border)}.topline{display:flex;align-items:center;justify-content:space-between;gap:16px}.logo{font-weight:800;letter-spacing:.07em;font-size:.8rem;color:var(--purple)}.version{border:1px solid #594268;border-radius:100px;padding:4px 12px;font-size:.75rem;color:#ddcbea}.hero{display:grid;grid-template-columns:1.35fr 1fr;gap:40px;align-items:center;margin-top:30px}h1{font-size:clamp(2.15rem,4.6vw,3.7rem);line-height:1.12;letter-spacing:-.045em;margin:10px 0 18px}h1 span{color:var(--purple)}h2{font-size:1.5rem;line-height:1.3;margin:0 0 10px}h3{font-size:1rem;line-height:1.4;margin:0 0 10px}p{margin:0 0 16px}.muted,.hint{color:var(--muted)}.hint{font-size:.8rem;font-weight:400}.hero p{max-width:640px;color:var(--muted)}.hero-info{padding:22px;background:#251934;border:1px solid #64457b;border-radius:20px;position:relative;overflow:hidden}.hero-info .orb{position:absolute;right:-35px;top:-60px;width:170px;height:170px;border:1px solid #b68de844;border-radius:50%;box-shadow:0 0 0 28px #b68de808;pointer-events:none}.hero-info p{margin:8px 0;font-size:.87rem}.hero-info strong{color:var(--green)}main{padding:26px 0 45px}.volume{display:grid;grid-template-columns:1fr 210px 1fr;gap:20px;align-items:center;margin-bottom:20px}.card{background:linear-gradient(145deg,#23192f,#171020);border:1px solid var(--border);border-radius:20px;padding:24px}.volume h2{font-size:1.12rem}.volume p{margin:0;font-size:.85rem}.volume-value{font-size:.95rem;color:var(--green)}label{display:grid;gap:7px;font-size:.87rem;font-weight:650}input,select{width:100%;min-width:0;color:var(--text);background:#100b19;border:1px solid #5c426f;border-radius:10px;padding:11px 12px;min-height:47px}input:focus,select:focus{border-color:var(--purple)}input[type=checkbox]{width:20px;min-height:20px;accent-color:#c6a1ff}.check{display:flex;align-items:flex-start;gap:10px;font-weight:450;margin-top:16px}.check input{flex:none;margin-top:3px}input[readonly]{background:#251b32}.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:22px 0}.tabs button{padding:13px 8px;color:var(--muted);border:1px solid var(--border);background:#191121;border-radius:12px;font-weight:700;min-height:48px}.tabs button[aria-selected=true]{background:#4b2c6a;border-color:#be98f0;color:#fff}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 355px;gap:20px;align-items:start}.workspace>*{min-width:0}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:20px 0}.fields>*{min-width:0}.full{grid-column:1/-1}.lead{color:var(--muted);font-size:.9rem}.tag{font-size:.7rem;letter-spacing:.09em;font-weight:800;color:var(--green);text-transform:uppercase;margin-bottom:9px}.primary{background:linear-gradient(135deg,#c39afd,#e4c8ff);color:#241034;border:0;border-radius:11px;padding:13px 20px;font-weight:800;min-height:49px}.secondary{background:#30213e;border:1px solid #78518e;color:#ecd9ff;border-radius:10px;padding:10px 16px;font-weight:650}.note{background:#241a2f;border-left:3px solid #b38be0;padding:13px 15px;border-radius:0 10px 10px 0;margin:16px 0;font-size:.85rem;color:#d9c6e7}.note.warning{border-color:#e9b577;background:#2b201b;color:var(--amber)}details{margin-top:16px}summary{cursor:pointer;color:#dfc7fb;font-size:.88rem;font-weight:700}.dimension{grid-template-columns:repeat(3,minmax(0,1fr))}.result{position:sticky;top:20px}.result-empty{font-size:.87rem;color:var(--muted)}.result .amount{font-size:2.3rem;color:var(--green);line-height:1.2;font-weight:800;margin:20px 0 8px;overflow-wrap:anywhere}.result dl{margin:20px 0 0}.result-row{display:flex;justify-content:space-between;gap:15px;padding:10px 0;border-bottom:1px solid #493452;font-size:.83rem}.result dt{color:var(--muted)}.result dd{margin:0;text-align:right;font-weight:650;max-width:63%;overflow-wrap:anywhere}.formula{padding:13px;background:#100b19;border-radius:10px;color:#e7d2fa;font-size:.82rem;overflow-wrap:anywhere;margin-top:16px}.result-note{font-size:.83rem;color:var(--muted);margin-top:16px}.error .tag{color:var(--amber)}.error .amount{color:var(--amber);font-size:1.15rem}.catalog-toolbar{display:grid;grid-template-columns:1fr 150px;gap:12px;margin:20px 0}.catalog{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.product{background:#140d1e;border:1px solid #423050;border-radius:12px;padding:16px;min-width:0}.product h3{font-size:.93rem;margin:8px 0}.product p{font-size:.76rem;color:var(--muted);margin:5px 0;overflow-wrap:anywhere}.product .secondary{width:100%;font-size:.78rem;margin-top:10px}.brand{font-size:.7rem;color:var(--purple);font-weight:750}.source-list{padding-left:20px;font-size:.85rem;color:var(--muted)}.source-list li{margin-bottom:14px}.source-list a{overflow-wrap:anywhere}footer{border-top:1px solid var(--border);padding:24px 0;color:var(--muted);font-size:.79rem}footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.status{color:var(--muted);font-size:.8rem;margin-top:14px}.btnrow{display:flex;gap:12px;flex-wrap:wrap}small{font-size:.78rem}[hidden]{display:none!important}.skip{position:absolute;left:10px;top:-100px;background:#100b19;padding:10px;z-index:2}.skip:focus{top:10px}
+@media(max-width:950px){.workspace{grid-template-columns:minmax(0,1fr) 310px}.volume{grid-template-columns:1fr 170px}.volume .volume-value{grid-column:1/-1}.hero{gap:25px}.card{padding:20px}}
+@media(max-width:760px){.wrap{width:calc(100% - 24px)}header{padding-bottom:25px}.hero{grid-template-columns:1fr;margin-top:20px;gap:15px}.hero-info{padding:17px}.workspace{grid-template-columns:1fr}.result{position:static}.tabs{grid-template-columns:repeat(3,minmax(0,1fr))}.tabs button{font-size:.82rem}.volume{gap:10px}.fields{gap:12px}.card{padding:18px;border-radius:15px}.catalog{grid-template-columns:1fr}.volume .volume-value{font-size:.83rem}.dimension{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:400px){.fields{grid-template-columns:1fr}.full{grid-column:auto}.volume{grid-template-columns:1fr}.volume .volume-value{grid-column:auto}.dimension{grid-template-columns:1fr}.catalog-toolbar{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:no-preference){button{transition:background .15s,transform .15s}.primary:hover{transform:translateY(-1px)}}
+@media print{body{background:white;color:black}.hero,.tabs,.volume,.workspace>section,footer, .result-empty{display:none}.workspace{display:block}.result{position:static;background:white;color:black;border:1px solid #777}.result .amount,.result dt,.result-note,.tag{color:black}.formula{background:#eee;color:black}a{color:black}}
 </style>
 </head>
-<body>
-
-<dialog id="chemIntro" class="chem-intro" aria-labelledby="introTitle" aria-describedby="introSubtitle">
-  <div class="intro-brand">WTR + DIVERSEY</div>
-  <svg class="intro-scene" viewBox="0 0 320 230" aria-hidden="true" focusable="false">
-    <ellipse class="intro-ring" cx="160" cy="115" rx="136" ry="98"/>
-    <path class="intro-link" d="M160 88 84 157 M160 88 236 157"/>
-    <g class="intro-o"><circle cx="160" cy="88" r="39"/><text x="160" y="90">O</text></g>
-    <g class="intro-h-left"><circle cx="84" cy="157" r="26"/><text x="84" y="159">H</text></g>
-    <g class="intro-h-right"><circle cx="236" cy="157" r="26"/><text x="236" y="159">H</text></g>
-  </svg>
-  <h2 class="intro-title" id="introTitle">Suyun dengesi, kimyanın uyumu.</h2>
-  <p class="intro-subtitle" id="introSubtitle">Havuz bakımında doğru hesap.</p>
-  <button class="intro-skip" id="introSkip" type="button" autofocus>Atla ve hesaplamaya geç</button>
-</dialog>
-<script>
-(() => {
-  const intro = document.getElementById("chemIntro");
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  if (reducedMotion.matches || typeof intro.showModal !== "function") return;
-  let fadeTimer, closeTimer;
-  const finish = () => { if (intro.open) intro.close(); };
-  intro.addEventListener("close", () => {
-    clearTimeout(fadeTimer);
-    clearTimeout(closeTimer);
-  }, {once:true});
-  document.getElementById("introSkip").addEventListener("click", finish);
-  reducedMotion.addEventListener("change", event => { if (event.matches) finish(); });
-  intro.showModal();
-  fadeTimer = setTimeout(() => intro.classList.add("is-leaving"), 1800);
-  closeTimer = setTimeout(finish, 2150);
-})();
-</script>
-
-<header class="hero">
-  <div class="chem-decor chem-bubbles" aria-hidden="true"><i style="--x:12%;--size:12px;--time:14s;--delay:-0s"></i><i style="--x:29%;--size:16px;--time:17s;--delay:-4s"></i><i style="--x:48%;--size:20px;--time:20s;--delay:-8s"></i><i style="--x:65%;--size:24px;--time:23s;--delay:-12s"></i><i style="--x:81%;--size:28px;--time:26s;--delay:-16s"></i><i style="--x:94%;--size:32px;--time:29s;--delay:-20s"></i></div>
-  <div class="container">
-    <div class="chem-decor chem-molecule" aria-hidden="true"><svg viewBox="0 0 260 220" focusable="false"><ellipse class="chem-orbit" cx="130" cy="110" rx="116" ry="83"/><path class="chem-bond" d="M130 108 60 160 M130 108 204 156"/><circle class="chem-atom core" cx="130" cy="108" r="36"/><circle class="chem-atom" cx="60" cy="160" r="23"/><circle class="chem-atom" cx="204" cy="156" r="23"/><text x="130" y="109">O</text><text x="60" y="161">H</text><text x="204" y="157">H</text><circle cx="26" cy="72" r="4" fill="#58e0b6" opacity=".6"/><circle cx="219" cy="52" r="6" fill="#3bc6ff" opacity=".5"/></svg></div>
-    <div class="eyebrow">WTR + DIVERSEY · HAVUZ SUYU BAKIMI</div>
-    <h1>Kimyasal Hesap Makinesi</h1>
-    <p>Havuz hacmini ve ölçüm değerlerini gir. WTR ve Diversey/Divergard ürünlerinde doğrulanmış oranları hesapla; sabit doz bulunmayan ürünlerde tahmin yerine ürün rehberini kullan.</p>
-    <div class="chips"><span class="chip">37 WTR ürün</span><span class="chip">21 Diversey ürün</span><span class="chip">Mobil uyumlu</span><span class="chip">Klor · pH · bakım</span></div>
-    <div class="engine-status"><span id="selfTestBadge" class="engine-badge">Hesap motoru doğrulanıyor…</span></div>
-    <label class="chem-motion"><input id="chemMotion" type="checkbox" checked> Animasyon</label>
-  </div>
-</header>
-
-<main class="container">
-  <section class="card volume-card">
-    <h2>01 · Havuz hacmi</h2>
-    <div class="grid">
-      <label>Su hacmi (m³ / yaklaşık ton)
-        <input id="volume" type="text" min="0.1" step="0.1" value="60" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-        <span class="hint">1 m³ = 1.000 L ≈ 1 ton su</span>
-      </label>
-      <details>
-        <summary>Ölçülerden hacim hesapla</summary>
-        <div class="grid three" style="margin-top:12px">
-          <label>Uzunluk (m)<input id="len" type="text" step="0.01" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
-          <label>Genişlik (m)<input id="wid" type="text" step="0.01" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
-          <label>Ort. derinlik (m)<input id="dep" type="text" step="0.01" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
-        </div>
-        <div class="actions"><button class="secondary" id="dimCalc">Hacmi hesapla</button></div>
-      </details>
-    </div>
-  </section>
-
-  <div class="layout">
-    <section class="card">
-      <div class="tabs" role="tablist">
-        <button type="button" class="tab-btn active" data-tab="chlor">Klor / Şoklama</button>
-        <button type="button" class="tab-btn" data-tab="ph">pH</button>
-        <button type="button" class="tab-btn" data-tab="alk">Alkalinite</button>
-        <button type="button" class="tab-btn" data-tab="maint">Bakım</button>
-        <button type="button" class="tab-btn" data-tab="manual">Otomatik ürün</button>
-        <button type="button" class="tab-btn diversey-tab-btn" data-tab="diversey">Diversey</button>
-        <button type="button" class="tab-btn" data-tab="catalog">Tüm ürünler</button>
-      </div>
-
-      <section class="tab" id="tab-chlor">
-        <h2 class="section-title">Klor ve şoklama</h2>
-        <div class="grid">
-          <label>WTR ürünü
-            <select id="chlorProduct">
-              <option value="wtr56">WTR %56 · granül klor</option>
-              <option value="wtr90">WTR %90 · granül klor</option>
-              <option value="calhypo">WTR CALHYPO · kalsiyum hipoklorit</option>
-              <option value="ks12">WTR KS · %12 sıvı klor</option>
-            </select>
-          </label>
-          <label>Ölçülen pH (6,5–8,0)<input id="chlorPh" type="text" min="6.5" max="8" step="0.01" value="7.40" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
-          <label>Mevcut serbest klor (ppm)<input id="chlorCurrent" type="text" min="0" step="0.1" value="0.5" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
-          <label>Hedef serbest klor (ppm)<input id="chlorTarget" type="text" min="0" step="0.1" value="2" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
-        </div>
-        <div class="actions"><button class="primary" id="chlorCalc">Klor dozunu hesapla</button></div>
-        <div class="note">Şoklama için hedef ppm değerini siz girersiniz. WTR KS hesabında önceki isteğiniz doğrultusunda yoğunluk alanı yoktur ve %12 aktif klor = 120 g/L kabul edilir.</div>
-      </section>
-
-      <section class="tab" id="tab-ph" hidden>
-        <h2 class="section-title">pH düşürme</h2>
-        <div class="grid">
-          <label>WTR ürünü
-            <select id="phProduct">
-              <option value="alkaMinus">WTR ALKA MINUS · etiket bazlı</option>
-              <option value="ls">WTR pH MINUS LIQUIDE S (LS)</option>
-              <option value="toz">WTR TOZ pH MINUS</option>
-            </select>
-          </label>
-          <label>Mevcut pH (6,5–8,0)<input id="phCurrent" type="text" min="6.5" max="8" step="0.01" value="7.80" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
-          <label>Hedef pH (6,5–8,0)<input id="phTarget" type="text" min="6.5" max="8" step="0.01" value="7.40" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
-        </div>
-        <div class="actions"><button class="primary" id="phCalc">pH dozunu hesapla</button></div>
-        <div class="note">Önceki tercihiniz korunmuştur: pH düşürme hesabında ayrıca alkalinite giriş alanı kullanılmaz. WTR PH MINUS L katalogda yer alır fakat pH hesap ürünlerinden çıkarılmıştır.</div>
-      </section>
-
-      <section class="tab" id="tab-alk" hidden>
-        <h2 class="section-title">Alkalinite</h2>
-        <div class="note warning">WTR ALKA PLUS ve alkaliniteye özel ALKA MINUS uygulamalarında üretici sayfası sabit ppm→doz katsayısı yayımlamıyor. Bu yüzden program burada uydurma doz üretmiyor. pH düşürme amaçlı ALKA MINUS oranı pH sekmesinde mevcut.</div>
-        <div class="catalog-grid" style="margin-top:12px">
-          <article class="product-card"><div class="badges"><span>pH / Alkalinite</span></div><h3>WTR ALKA MINUS 29 KG/20LT</h3><code>WTR-ALKMN025</code></article>
-          <article class="product-card"><div class="badges"><span>pH / Alkalinite</span></div><h3>WTR ALKA PLUS 25 KG</h3><code>WTR-ALKPLS25</code></article>
-        </div>
-      </section>
-
-      <section class="tab" id="tab-maint" hidden>
-        <h2 class="section-title">Bakım / temizlik</h2>
-        <div class="grid">
-          <label>Ürün
-            <select id="maintProduct">
-              <option value="clear">WTR CLEAR · 1 L / 100 m³</option>
-              <option value="clearTab">WTR CLEAR TAB · 1 tablet / 50 m³</option>
-              <option value="cf100">WTR CF 100 · filtre suyu %10</option>
-              <option value="qac5">WTR QAC 100 · %5 solüsyon</option>
-              <option value="qac1">WTR QAC 100 PLUS · %1 solüsyon</option>
-              <option value="cellClean">WTR CELL CLEAN · seyreltilmeden</option>
-              <option value="coolClean">WTR COOL CLEAN · 1:10'a kadar</option>
-            </select>
-          </label>
-          <label id="filterWaterWrap" hidden>Filtre içindeki su (L)<input id="filterWater" type="text" min="0" step="1" value="100" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
-          <label id="solutionVolumeWrap" hidden>Hazırlanacak toplam solüsyon (L)<input id="solutionVolume" type="text" min="0" step="0.1" value="10" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
-          <label id="coolProductWrap" hidden>Kullanılacak ürün (L)<input id="coolProduct" type="text" min="0" step="0.1" value="1" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done"></label>
-        </div>
-        <div class="actions"><button class="primary" id="maintCalc">Bakım dozunu hesapla</button></div>
-      </section>
-      <section class="tab" id="tab-manual" hidden>
-        <h2 class="section-title">Otomatik WTR ürün rehberi</h2>
-        <p class="hint-block">
-          Önceki sürümde “etiket dozu gerekli” görünen ürünler burada gömülü üretici bilgileriyle çalışır.
-          Sayısal oran yayınlanmışsa doz otomatik hesaplanır; yayınlanmamışsa üreticinin doğrulanmış kullanım talimatı gösterilir.
-        </p>
-
-        <div class="grid">
-          <label>WTR ürünü
-            <select id="manualProduct"></select>
-          </label>
-
-          <label id="autoFilterWrap" hidden>Filtre içindeki su (L)
-            <input id="autoFilterWater" type="text" min="1" step="1" value="250" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-            <span class="hint">SCALE F için otomatik oran bu hacme göre hesaplanır.</span>
-          </label>
-
-          <label id="autoSolutionWrap" hidden>Hazırlanacak toplam solüsyon (L)
-            <input id="autoSolutionVolume" type="text" min="0.1" step="0.1" value="10" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-            <span class="hint">SCALE NF için %20–25 çalışma konsantrasyonu hesaplanır.</span>
-          </label>
-        </div>
-
-        <div class="auto-status" id="autoStatus"></div>
-
-        <div class="actions">
-          <button class="primary" id="autoCalc">Üretici kuralını hesapla / göster</button>
-        </div>
-
-        <div class="note">
-          Havuz hacmine bağlı ürünlerde üstteki m³ değeri doğrudan kullanılır. Örneğin CLEAN SHOCK, CLEAR 200 ve W20 seçildiğinde miktar otomatik değişir.
-        </div>
-
-        <details id="manualOverride" class="manual-override">
-          <summary>Yedek: yeni veya farklı bir etiket oranını elle gir</summary>
-          <div class="grid" style="margin-top:12px">
-            <label>Etikette yazan ürün miktarı
-              <input id="manualDoseAmount" type="text" min="0" step="0.01" value="1" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-            </label>
-            <label>Ürün miktarı birimi
-              <select id="manualDoseUnit">
-                <option value="g">g</option>
-                <option value="kg">kg</option>
-                <option value="mL">mL</option>
-                <option value="L">L</option>
-                <option value="tablet">tablet</option>
-                <option value="adet">adet</option>
-              </select>
-            </label>
-            <label>Etiketteki referans miktar
-              <input id="manualReferenceAmount" type="text" min="0.001" step="0.01" value="100" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-            </label>
-            <label>Referans türü
-              <select id="manualBasis">
-                <option value="pool">Havuz suyu (m³)</option>
-                <option value="solution">Hazırlanan solüsyon (L)</option>
-                <option value="surface">Yüzey alanı (m²)</option>
-                <option value="filter">Filtre / sistem suyu (L)</option>
-                <option value="equipment">Ekipman / adet</option>
-              </select>
-            </label>
-            <label id="manualTargetWrap">Hedef miktar
-              <input id="manualTargetAmount" type="text" min="0.001" step="0.01" value="60" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-              <span class="hint" id="manualTargetHint">Havuz suyu için üstteki hacim otomatik kullanılır.</span>
-            </label>
-          </div>
-          <div class="actions">
-            <button class="secondary" id="manualCalc">Manuel oranı hesapla</button>
-            <button class="secondary" id="manualUsePool">Havuz hacmini kullan</button>
-          </div>
-        </details>
-
-        <div class="note warning">
-          Program yalnızca doğrulanmış oranı ölçekler. Üreticinin sabit doz yayımlamadığı ürünlerde tahmini miktar üretmez.
-          Ürün etiketi ve SDS her zaman önceliklidir.
-        </div>
-      </section>
-
-
-      <section class="tab" id="tab-diversey" hidden>
-        <div class="brand-head">
-          <div>
-            <div class="brand-kicker">DIVERSEY · DIVERGARD</div>
-            <h2 class="section-title">Diversey havuz kimyasalları</h2>
-          </div>
-          <span class="brand-count" id="diverseyCount"></span>
-        </div>
-
-        <p class="hint-block">
-          Diversey/Divergard havuz ürünlerini seç. Ürün etiketlerinden doğrulanan dozlar doğrudan otomatik hesaplanır;
-          sayısal oranı bulunmayan ürünlerde güvenli ürün rehberi gösterilir.
-        </p>
-
-        <div class="grid">
-          <label>Diversey ürünü
-            <select id="diverseyProduct"></select>
-          </label>
-          <label>Kategori
-            <input id="diverseyCategory" type="text" readonly>
-          </label>
-        </div>
-
-        <div class="auto-status diversey-status" id="diverseyStatus"></div>
-
-        <div class="grid" id="diverseyChlorFields" hidden>
-          <label>Mevcut serbest klor (ppm)
-            <input id="diverseyChlorCurrent" type="text" min="0" step="0.1" value="0.5" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-          </label>
-          <label>Hedef serbest klor (ppm)
-            <input id="diverseyChlorTarget" type="text" min="0" step="0.1" value="2" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-          </label>
-          <label>Ölçülen pH
-            <input id="diverseyPh" type="text" min="6.5" max="8.2" step="0.01" value="7.40" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-            <span class="hint">Serbest klor hesabında pH yalnızca kontrol bilgisi olarak gösterilir.</span>
-          </label>
-        </div>
-
-        <div class="grid" id="diverseyPhDropFields" hidden>
-          <label>Mevcut pH
-            <input id="diverseyPhCurrent" type="text" min="6.5" max="8.5" step="0.01" value="7.80" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-          </label>
-          <label>Hedef pH
-            <input id="diverseyPhTarget" type="text" min="6.5" max="8.5" step="0.01" value="7.40" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-          </label>
-        </div>
-
-        <div class="grid" id="diverseySolutionFields" hidden>
-          <label>Hazırlanacak toplam temizlik çözeltisi (L)
-            <input id="diverseySolutionVolume" type="text" min="0.1" step="0.1" value="10" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-            <span class="hint">Filter Clean için %20–50 çalışma çözeltisi hesaplanır.</span>
-          </label>
-        </div>
-
-        <div class="actions">
-          <button class="primary diversey-primary" id="diverseyCalc">Diversey dozunu hesapla / göster</button>
-        </div>
-
-        <div class="note" id="diverseyProductNote"></div>
-
-        <details class="manual-override" id="diverseyManualOverride">
-          <summary>Yedek: Diversey etiketindeki farklı oranı elle hesapla</summary>
-          <div class="grid" style="margin-top:12px">
-            <label>Etikette yazan ürün miktarı
-              <input id="diverseyManualDose" type="text" min="0" step="0.01" value="1" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-            </label>
-            <label>Birim
-              <select id="diverseyManualUnit">
-                <option value="g">g</option>
-                <option value="kg">kg</option>
-                <option value="mL">mL</option>
-                <option value="L">L</option>
-                <option value="tablet">tablet</option>
-                <option value="adet">adet</option>
-              </select>
-            </label>
-            <label>Etiket referansı
-              <input id="diverseyManualReference" type="text" min="0.001" step="0.01" value="100" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-            </label>
-            <label>Referans türü
-              <select id="diverseyManualBasis">
-                <option value="pool">m³ havuz suyu</option>
-                <option value="solution">L solüsyon</option>
-                <option value="surface">m² yüzey</option>
-                <option value="filter">L filtre/sistem suyu</option>
-                <option value="equipment">adet ekipman</option>
-              </select>
-            </label>
-            <label>Hedef miktar
-              <input id="diverseyManualTarget" type="text" min="0.001" step="0.01" value="60" inputmode="decimal" autocomplete="off" spellcheck="false" enterkeyhint="done">
-              <span class="hint" id="diverseyManualHint">Havuz suyu seçiliyken üstteki hacim otomatik kullanılır.</span>
-            </label>
-          </div>
-          <div class="actions">
-            <button class="secondary" id="diverseyManualCalc">Manuel Diversey oranını hesapla</button>
-          </div>
-        </details>
-
-        <div class="diversey-catalog-head">
-          <h3>Diversey ürün kataloğu</h3>
-          <input id="diverseySearch" type="search" placeholder="Diversey ürünü veya kodu ara…">
-        </div>
-        <div class="catalog-grid" id="diverseyGrid"></div>
-
-        <div class="note warning">
-          Kimyasalları birbirine karıştırmayın. Özellikle klor ürünlerini asit/pH düşürücülerle aynı kapta veya aynı anda dozlamayın.
-          Ürün etiketi, SDS/TDS ve saha ölçümleri hesap makinesinden önceliklidir.
-        </div>
-      </section>
-
-      <section class="tab" id="tab-catalog" hidden>
-        <h2 class="section-title">Agora WTR ürün kataloğu</h2>
-        <div class="catalog-toolbar">
-          <input id="catalogSearch" type="search" placeholder="Ürün veya SKU ara…">
-          <select id="catalogCategory"><option value="">Tüm kategoriler</option></select>
-        </div>
-        <div class="catalog-meta" id="catalogCount"></div>
-        <div class="note">Katalogdaki “Otomatik rehber” ürünlerine basınca gömülü üretici dozu veya doğrulanmış uygulama talimatı açılır.</div>
-        <div class="catalog-grid" id="catalogGrid"></div>
-      </section>
-    </section>
-
-    <aside>
-      <section class="card result-card" id="resultCard" role="status" aria-live="polite" aria-atomic="true" hidden>
-        <div class="result-kicker">HESAP SONUCU</div>
-        <h2 id="resultTitle"></h2>
-        <div id="resultBody"></div>
-        <p class="result-note" id="resultNote"></p>
-      </section>
-      <section class="card" style="margin-top:18px">
-        <h3>Uygulama güvenliği</h3>
-        <div class="note warning">Asit ve klor ürünlerini aynı kapta veya aynı anda karıştırmayın. Ayrı ekipman kullanın. Ürün etiketi, SDS ve saha ölçümü her zaman hesap makinesinden önceliklidir.</div>
-      </section>
-    </aside>
-  </div>
-</main>
-
-<footer class="container footer">
-  <strong>Kaynak / kapsam:</strong> Agora Kimya WTR kataloğu ile Diversey/Divergard Türkiye havuz ürün kataloğundaki ürünler sisteme alınmıştır. Sayısal oran doğrulanmışsa otomatik hesaplanır; aksi halde ürün rehberi gösterilir.
-  <ul class="source-list">
-    <li>https://www.agorakimya.com.tr/products/havuz-ve-spa/wtr/</li>
-    <li>Diversey/Divergard Türkiye havuz bakım katalogları ve Solenis/Diversey havuz kullanım rehberi</li>
-  </ul>
-</footer>
-<script>
-"use strict";
-
-const WTR_PRODUCTS = [{"name": "WTR %56 25 KG", "sku": "WTR-56000025", "category": "Klor / Dezenfeksiyon", "calc": "chlorine56"}, {"name": "WTR %90 25 KG", "sku": "WTR-90000025", "category": "Klor / Dezenfeksiyon", "calc": "chlorine90"}, {"name": "WTR CALHYPO 25 KG", "sku": "WTR-CHYPO025", "category": "Klor / Dezenfeksiyon", "calc": "calhypo"}, {"name": "WTR KS 25 KG / 20 LT", "sku": "WTR-KS000025", "category": "Klor / Dezenfeksiyon", "calc": "ks12"}, {"name": "WTR TOZ PH MINUS 25 KG", "sku": "WTR-TPHMS025", "category": "pH Düzenleme", "calc": "tozPhMinus"}, {"name": "WTR PH MINUS L 25 KG / 20LT", "sku": "WTR-PHML0025", "category": "pH Düzenleme", "calc": null}, {"name": "WTR PH MINUS LIQUIDE S 25 KG/20LT", "sku": "WTR-PHMLQS25", "category": "pH Düzenleme", "calc": "ls"}, {"name": "WTR ALKA MINUS 29 KG/20LT", "sku": "WTR-ALKMN025", "category": "pH / Alkalinite", "calc": "alkaMinus"}, {"name": "WTR ALKA PLUS 25 KG", "sku": "WTR-ALKPLS25", "category": "pH / Alkalinite", "calc": null}, {"name": "WTR CLEAN TAB 1,6 KG", "sku": "WTR-CLEANTAB16KG", "category": "Bakım", "calc": null}, {"name": "WTR PH PLUS SIVI NAOH 20 LT / 30 KG", "sku": "WTR-PHPLS20", "category": "pH Düzenleme", "calc": null}, {"name": "WTR BST 100 20 KG /20 LT", "sku": "WTR-BST10020", "category": "Yosun Önleyici", "calc": null}, {"name": "WTR BST 40 20 KG /20 LT", "sku": "WTR-BST04020", "category": "Yosun Önleyici", "calc": null}, {"name": "WTR POOLSAN 1 LT", "sku": "WTR-POOLSAN1", "category": "Dezenfeksiyon / Yosun", "calc": null}, {"name": "WTR QAC KH SPREY", "sku": "WTR-QACKHS01", "category": "Yüzey Dezenfeksiyonu", "calc": null}, {"name": "WTR QAC 100", "sku": "WTR-QAC10020", "category": "Yüzey Dezenfeksiyonu", "calc": "qac5"}, {"name": "WTR QAC 100 PLUS", "sku": "WTR-QAC100PLS20", "category": "Ayak Havuzu Hijyeni", "calc": "qac1"}, {"name": "WTR CLEAR 20 KG /20 LT", "sku": "WTR-CLR00020", "category": "Berraklaştırıcı / Topaklayıcı", "calc": "clear"}, {"name": "WTR CLEAR TAB", "sku": "WTR-CLRTAB", "category": "Berraklaştırıcı / Topaklayıcı", "calc": "clearTab"}, {"name": "WTR CLEAN SHOCK 1 LT", "sku": "WTR-CLNSHOCK", "category": "Bakım", "calc": null}, {"name": "WTR CLEAR 200 20 LT", "sku": "WTR-CLR20020", "category": "Berraklaştırıcı", "calc": null}, {"name": "WTR FLOCK 20 LT", "sku": "WTR-FLCK20", "category": "Çöktürücü / Topaklayıcı", "calc": null}, {"name": "WTR FLOCK 14 22 KG / 20 LT", "sku": "WTR-FLCK1422", "category": "Çöktürücü / Topaklayıcı", "calc": null}, {"name": "WTR FLOCK TABLET 1600 GR", "sku": "WTR-FLCKTBL", "category": "Çöktürücü / Topaklayıcı", "calc": null}, {"name": "WTR FLOCK 170 28 KG / 20LT", "sku": "WTR-FLCK1728", "category": "Çöktürücü / Topaklayıcı", "calc": null}, {"name": "WTR COMPLEX 21 KG / 20 LT", "sku": "WTR-CMPLX020", "category": "İyon Tutucu", "calc": null}, {"name": "WTR COMPLEX TAB 3 KG", "sku": "WTR-COMPLXTAB3KG", "category": "İyon Tutucu / Bakım", "calc": null}, {"name": "WTR CELL PROTECTOR 20 L", "sku": "WTR-CLLPRTCTR20", "category": "Tuz Klor Hücresi Bakımı", "calc": null}, {"name": "WTR CF 100 25 KG", "sku": "WTR-CF010025", "category": "Filtre Temizleyici", "calc": "cf100"}, {"name": "WTR SCALE F 22 KG / 20LT", "sku": "WTR-SCLF22", "category": "Yüzey / Kireç Temizliği", "calc": null}, {"name": "WTR SCALE 25 KG / 20 LT", "sku": "WTR-SCALE025", "category": "Yüzey / Kireç Temizliği", "calc": null}, {"name": "WTR SCALE NF 25 KG / 20LT", "sku": "WTR-SCALNF25", "category": "Yüzey / Ekipman Temizliği", "calc": null}, {"name": "WTR CELL CLEAN 10 KG", "sku": "WTR-CELCLN010", "category": "Tuz Klor Hücresi Temizliği", "calc": "cellClean"}, {"name": "WTR INACT 20 20 LT / 23 KG", "sku": "WTR-INCT2020", "category": "Oksidan İnaktivasyonu", "calc": null}, {"name": "WTR W-20 20 KG /20 LT", "sku": "WTR-W0002020", "category": "Kışlık Bakım", "calc": null}, {"name": "WTR COILTAB", "sku": "WTR-COTAB400", "category": "Ekipman Bakımı", "calc": null}, {"name": "WTR COOL CLEAN 20 LT", "sku": "WTR-COOCLN20", "category": "Coil / Metal Temizliği", "calc": "coolClean"}];
-
-const DIVERSEY_PRODUCTS = [{"name": "Divergard Dichlor", "sku": "70024060 / 70021080", "category": "Klor / Dezenfeksiyon", "mode": "activeChlorine", "active": 56, "package": "25 kg / 50 kg", "lines": [["Tip", "Stabilizatörlü, hızlı çözünen granül klor"]], "note": "Teorik ppm hesabında %56 aktif klor ön ayarı kullanılır. Ambalaj etiketindeki aktif klor yüzdesini uygulamadan önce doğrulayın."}, {"name": "Divergard TriChlor", "sku": "70024061 / 70021099", "category": "Klor / Dezenfeksiyon", "mode": "activeChlorine", "active": 90, "package": "25 kg / 50 kg", "lines": [["Tip", "Stabilizatörlü, yavaş çözünen granül klor"]], "note": "Teorik ppm hesabında %90 aktif klor ön ayarı kullanılır. Ambalaj etiketi önceliklidir."}, {"name": "Divergard CaHypo", "sku": "70024011 / 70024062 / 70022842", "category": "Klor / Dezenfeksiyon", "mode": "cahypo", "package": "5 kg / 25 kg / 40 kg", "lines": [["Tip", "Stabilizatörsüz, hızlı çözünen inorganik granül klor"]], "note": "Diversey/Solenis havuz mini rehberindeki hacim bazlı rutin ve başlangıç/şok oranları kullanılır."}, {"name": "Divergard CaHypo Tabs", "sku": "70021071", "category": "Klor / Tablet", "mode": "instruction", "package": "15 kg", "lines": [["Tip", "Stabilizatörsüz inorganik klor tableti"], ["Doz", "Türkiye kataloğunda m³ başına tablet adedi doğrulanmadı"], ["Kontrol", "Serbest klor ve ürün etiketiyle ayarlayın"]], "note": "Tablet ağırlığı ve hacim başına adet doğrulanmadan otomatik miktar üretilmez."}, {"name": "Divergard TriChlor Tabs", "sku": "70021074 / 70021075", "category": "Klor / Tablet", "mode": "instruction", "package": "15 kg / 50 kg", "lines": [["Tip", "Stabilizatörlü, yavaş çözünen klor tableti"], ["Doz", "Hacim başına tablet adedi doğrulanmadı"]], "note": "Etiket dozu veya saha prosedürüyle kullanın."}, {"name": "Divergard Triplex Tabs", "sku": "70022102", "category": "Klor / Tablet", "mode": "instruction", "package": "15 kg", "lines": [["Tip", "3 etkili tablet"], ["İşlev", "Klorlama + yosun kontrolü + çöktürmeye yardımcı"], ["Doz", "Hacim başına tablet adedi doğrulanmadı"]], "note": "Etiketteki tablet ağırlığı ve kullanım oranı önceliklidir."}, {"name": "Divergard Bro", "sku": "70021067", "category": "Dezenfeksiyon / Brom", "mode": "instruction", "package": "5 kg", "lines": [["Tip", "Brom bazlı havuz suyu şartlandırıcı"], ["Özellik", "Geniş spektrumlu, kokusuz olarak tanımlanır"], ["Doz", "Sabit hacim dozu doğrulanmadı"]], "note": "Klor ppm hesabına doğrudan çevrilmez; ürün etiketindeki brom hedefi esas alınmalıdır."}, {"name": "Divergard pH Down", "sku": "70024042 / 70021088", "category": "pH Düzenleme", "mode": "phDropFixed", "package": "5 kg / 25 kg", "lines": [["Tip", "Toz pH düşürücü"], ["Etiket dozu", "100 m³ için her 0,1 pH düşüşüne 3 kg"], ["Uygulama", "Etikette %5'lik çözelti hazırlanarak yavaş ilave öneriliyor"]], "note": "Etiket fotoğrafından doğrulandı. İlave sonrası sirkülasyon sağlanıp pH yeniden ölçülmeli; gerekirse işlem tekrarlanmalıdır.", "doseKg": 3.0, "referenceM3": 100, "referencePh": 0.1}, {"name": "Divergard pH Up", "sku": "70021091", "category": "pH Düzenleme", "mode": "instruction", "package": "17 kg", "lines": [["Tip", "Toz pH yükseltici"], ["Amaç", "Havuz pH değerini yükseltme"], ["Doz", "Sabit pH→kg katsayısı doğrulanmadı"]], "note": "Ambalaj etiketi ve alkalinite ölçümüyle uygulanmalıdır."}, {"name": "Divergard Alka Break", "sku": "70022092", "category": "pH / Alkalinite", "mode": "phDropRange", "package": "20 L / 29 kg", "lines": [["İçerik", "Sülfürik asit çözeltisi"], ["Etiket dozu", "100 m³ için her 0,1 pH düşüşüne 500–1500 g"], ["Son işlem", "pH ayarlandıktan sonra dezenfektan maddeleri ilave edilir"]], "note": "Etiket fotoğrafından doğrulandı. Doz aralık olarak verildiği için program alt ve üst sınırı birlikte gösterir.", "doseLowG": 500, "doseHighG": 1500, "referenceM3": 100, "referencePh": 0.1, "densityKgL": 1.45}, {"name": "Divergard Fast Floc", "sku": "70023397 / 70023398", "category": "Çöktürücü / Flok", "mode": "poolRatio", "package": "10 L / 20 L", "lines": [["İçerik", "Alüminyum klorür"], ["Etiket dozu", "100 m³ havuz suyu için 1 L"], ["Uygulama", "Sirkülasyon çalışırken ilave edilir; yeterli sirkülasyondan sonra pompa bir süre durdurulur"]], "note": "Etiket fotoğrafından doğrulandı. Dibe çöken büyük topaklar dip süpürgesiyle uzaklaştırılır; küçük topaklar filtrasyonda tutulur.", "dose": 1.0, "unit": "L", "referenceM3": 100}, {"name": "Divergard Super Floc", "sku": "70024043 / 70023400", "category": "Çöktürücü / Flok", "mode": "poolRatio", "package": "5 L / 20 L", "lines": [["İçerik", "Alüminyum klorür"], ["Etiket dozu", "100 m³ havuz suyu için 1 L"], ["Dozlama sırasında", "Sirkülasyon sistemi çalışır durumda olmalı"], ["Tam sirkülasyon sonrası", "Pompa durdurulur ve havuz 1–2 saat bekletilir"], ["Temizlik", "Büyük çökeltiler dip süpürgesiyle alınır; küçük parçacıklar filtrede tutulur"]], "note": "Fiziksel ürün etiketinden doğrulandı.", "dose": 1.0, "unit": "L", "referenceM3": 100}, {"name": "Divergard Pool Clear", "sku": "70023399 / 70021094", "category": "Berraklaştırıcı", "mode": "instruction", "package": "20 L / yaklaşık 21,6 kg", "lines": [["Tip", "Berraklaştırıcı / parlatıcı / çöktürmeye yardımcı"], ["Doz", "m³ başına sabit miktar doğrulanmadı"]], "note": "Ürün güncel Diversey ürün listelerinde yer alır; saha dozu etiketten alınmalıdır."}, {"name": "Divergard Pool Clear Plus", "sku": "70022093", "category": "Berraklaştırıcı", "mode": "dualPoolRatio", "package": "20 L / 21,6 kg", "lines": [["Tip", "Konsantre berraklaştırıcı"], ["Etiket önerisi", "100 m³ için 2 L"], ["Düzenli kullanım", "100 m³ için 200 mL"]], "note": "Etiket fotoğrafından doğrulandı. Program genel önerilen dozu ve düzenli kullanım dozunu ayrı gösterir.", "primaryDose": 2.0, "primaryUnit": "L", "routineDose": 200, "routineUnit": "mL", "referenceM3": 100}, {"name": "Divergard CleanFil", "sku": "70021077", "category": "Filtre / Yüzey Temizliği", "mode": "instruction", "package": "25 kg", "lines": [["Tip", "Kirece karşı etkili filtre ve yüzey temizleyici"], ["Doz", "Filtre suyu başına sabit oran doğrulanmadı"]], "note": "Filtreyi devreden ayırma, bekletme ve durulama prosedürü ürün etiket/TDS'sine göre yapılmalıdır."}, {"name": "Divergard Filter Clean", "sku": "Türkiye satış ürünü", "category": "Filtre / Yüzey Temizliği", "mode": "solutionRange", "package": "20 L / 26 kg", "lines": [["Tip", "Filtre/yüzey kireç ve mineral birikinti temizleyici"], ["Etiket oranı", "%20–50 çalışma çözeltisi"], ["Son işlem", "Önerilen reaksiyon süresi sonrası temizleyin ve yüzeyi iyice durulayın"]], "note": "Etiket fotoğrafından doğrulandı. Bu ürün havuz suyuna rutin dozlanmaz; temizlik çözeltisi hazırlanır.", "lowPct": 20, "highPct": 50}, {"name": "Divergard Guardion", "sku": "70021086", "category": "İyon / Sertlik Kontrolü", "mode": "instruction", "package": "20 L / 21,2 kg", "lines": [["Tip", "İyon bağlayıcı / sertlik giderici"], ["İşlev", "Kireç, demir, bakır ve mangan kaynaklı sorunların kontrolüne yardımcı"], ["Doz", "Sabit m³ dozu doğrulanmadı"]], "note": "Su sertliği ve metal iyon ölçümlerine göre etiket/TDS talimatıyla kullanılmalıdır."}, {"name": "Divergard Algae Guard", "sku": "70024010 / 70021059", "category": "Yosun Önleyici", "mode": "poolRatio", "package": "5 L / 20 L", "lines": [["Etiket önerilen doz", "100 m³ havuz suyu için 2,0 kg / hafta"], ["Uygulama", "Doğrudan havuz suyuna tatbik edilebilir"], ["Filtrasyon", "Uygulamadan sonra en az 3 saat filtrasyon öneriliyor"], ["Etiket notu", "Tablodaki uygulama aralığı sütununda ayrıca “Her gün” ibaresi bulunuyor"]], "note": "Fiziksel ürün etiketinden doğrulandı. Önerilen doz metni haftada bir 100 m³’e 2 kg olarak okunuyor; aynı etikette tabloda “Her gün” ibaresi de bulunduğundan uygulama sıklığını güncel etiket/TDS ve saha prosedürüyle teyit edin.", "dose": 2.0, "unit": "kg", "referenceM3": 100, "frequency": "Haftalık önerilen doz"}, {"name": "Divergard Algae Guard Plus", "sku": "70021062", "category": "Yosun Önleyici", "mode": "instruction", "package": "20 L", "lines": [["Tip", "Köpüksüz yosun önleyici"], ["Doz", "Sabit m³ başına uygulama miktarı doğrulanmadı"]], "note": "Algae Guard ile aynı doz varsayılmaz."}, {"name": "Divergard 222", "sku": "DIVERGARD-222", "category": "Yardımcı Temizlik", "mode": "instruction", "package": "25 kg", "lines": [["Tip", "Sülfamik asit bazlı kireç ve pas temizleyici"], ["Kullanım", "Hat, metal yüzey ve ekipman temizliği"], ["Not", "Doğrudan havuz suyu rutin kimyasalı değildir"]], "note": "Havuz suyu hacmine göre otomatik dozlanmaz."}, {"name": "Divergard 41266", "sku": "DIVERGARD-41266", "category": "Yardımcı Dezenfeksiyon / Havuz dışı", "mode": "nonPoolInstruction", "package": "", "lines": [["İçerik", "Hipoklorit çözeltisi"], ["Etiket ürün tipi", "Tip 2 yüzey dezenfektanı + Tip 5 içme suyu dezenfektanı"], ["İçme suyu etiketi", "0,5 ppm = 8,04 mL/m³"], ["Havuz kullanımı", "Etikette havuz suyu dozu belirtilmiyor"]], "note": "Bu değer havuz klorlama dozu değildir. Etiket fotoğrafında 8,04 mL/m³ oranı içme suyu dezenfeksiyonu için verilmiştir."}];
-
-const AUTO_GUIDES = {"WTR-PHML0025": {"mode": "instruction", "status": "Üretici sayfasında sabit hacim dozu yok", "lines": [["Ön koşul", "ALK 80–120 ppm aralığına getirilir"], ["Uygulama", "Otomatik dozaj sistemiyle kullanılması önerilir"], ["Kimyasal", "Hidroklorik asit bazlı sıvı pH düşürücü"]], "note": "Sabit m³ başına doz yayımlanmadığı için program sayısal miktar uydurmaz."}, "WTR-ALKPLS25": {"mode": "instruction", "status": "Firma temsilcisi önerisine göre kullanım", "lines": [["Amaç", "pH ve alkalinite yükseltme"], ["Uygulama", "Direkt havuza veya solüsyon olarak denge tankına"], ["Kontrol", "Tam sirkülasyon sonrası tekrar ölçüm"]], "note": "Agora, alkalinite uygulamasında firma temsilcisinin önerdiği şekilde kullanılmasını belirtiyor."}, "WTR-CLEANTAB16KG": {"mode": "instruction", "status": "Haftalık uygulama", "lines": [["Sıklık", "Haftada 1 defa"], ["Yer", "Filtre sepetine"], ["Tablet ağırlığı", "41,5 g / adet"]], "note": "Üretici sayfasında havuz hacmine göre tablet adedi belirtilmediği için otomatik tablet sayısı hesaplanmaz."}, "WTR-PHPLS20": {"mode": "instruction", "status": "Sabit hacim dozu yayımlanmamış", "lines": [["Amaç", "Havuz suyu pH değerini yükseltme"], ["Uygulama", "Direkt havuz suyuna veya suda çözerek denge tankına"], ["Ön kontrol", "pH ve alkalinite ölçülmeli"]], "note": "NaOH bazlı üründe sayısal pH→doz katsayısı üretici sayfasında yayımlanmıyor."}, "WTR-BST10020": {"mode": "instruction", "status": "Sabit hacim dozu yayımlanmamış", "lines": [["Amaç", "Yosun mücadelesi / algisit"], ["Uygulama", "Denge tankından havuza"], ["Uyumluluk", "Klorlu bileşiklerle uyumlu"]], "note": "Üretici kullanım yöntemini veriyor fakat m³ başına sayısal doz vermiyor."}, "WTR-BST04020": {"mode": "instruction", "status": "Sabit hacim dozu yayımlanmamış", "lines": [["Amaç", "Yosun önleyici yardımcı dezenfektan"], ["Uygulama", "Direkt havuz suyuna veya seyreltilerek denge tankından"], ["Kimyasal", "Didesil dimetil amonyum klorür"]], "note": "Üretici sayfasında m³ başına miktar yayımlanmıyor."}, "WTR-POOLSAN1": {"mode": "instruction", "status": "Hedef su değerleriyle kontrol", "lines": [["pH", "7,0–7,6"], ["ALK", "80–120 ppm"], ["CH", "250–500 ppm"], ["Cu", "0,4–0,8 ppm"], ["FCL", "0,3–0,5 ppm"], ["Alternatif O₂", "3–8 ppm"]], "note": "Üretici hedef su parametrelerini veriyor fakat ürün konsantrasyonuna dayalı hacim dozu yayımlamıyor."}, "WTR-QACKHS01": {"mode": "instruction", "status": "Kullanıma hazır yüzey ürünü", "lines": [["Uygulama", "Yüzeye yaklaşık 30 cm uzaktan püskürt"], ["Hedef", "Tüm yüzeyin ıslanması"], ["Son işlem", "Etkinlik süresi sonrası temiz bezle sil"]], "note": "Havuz suyuna dozlanan bir ürün değildir."}, "WTR-CLNSHOCK": {"mode": "poolRatio", "dose": 50, "unit": "mL", "reference": 25, "frequency": "Haftada 1 kez", "status": "Otomatik doz mevcut", "note": "Yayınlanmış öneri: 25 m³ havuz suyuna 50 mL."}, "WTR-CLR20020": {"mode": "poolRatio", "dose": 50, "unit": "mL", "reference": 100, "frequency": "Üretici önerisine göre uygulama", "status": "Otomatik doz mevcut", "note": "Yayınlanmış öneri: 100 m³ havuz suyuna 50 mL."}, "WTR-FLCK20": {"mode": "instruction", "status": "Proses talimatı var, sabit hacim dozu yok", "lines": [["En iyi pH", "7,2–7,6"], ["Uygulama", "Filtrasyondan önce"], ["Sonra", "1 tam tur filtrasyon, ardından sirkülasyonu kapat"], ["Temizlik", "Dibe çöken parçacıkları süpür"]], "note": "Agora sayfasında m³ başına ürün miktarı belirtilmiyor."}, "WTR-FLCK1422": {"mode": "instruction", "status": "Proses talimatı var, sabit hacim dozu yok", "lines": [["En iyi pH", "7,2–7,6"], ["Uygulama", "Filtrasyondan önce"], ["Sonra", "1 tam tur filtrasyon, ardından sirkülasyonu kapat"], ["Temizlik", "Dibe çöken parçacıkları süpür"]], "note": "Agora sayfasında m³ başına ürün miktarı belirtilmiyor."}, "WTR-FLCKTBL": {"mode": "instruction", "status": "Kartuş uygulaması", "lines": [["Tablet", "200 g / adet"], ["Ambalaj", "8 tablet = 1,6 kg"], ["Yer", "Pompa veya skimmer sepeti"], ["En iyi pH", "7,2–7,6"]], "note": "Üretici sayfasında havuz hacmine göre tablet adedi yayımlanmıyor."}, "WTR-FLCK1728": {"mode": "instruction", "status": "Sabit hacim dozu doğrulanmadı", "lines": [["Amaç", "Çöktürücü / topaklayıcı"], ["Kontrol", "Ürün etiketi ve saha bulanıklığına göre uygulama"]], "note": "Sayısal doz doğrulanmadan otomatik miktar üretmez."}, "WTR-CMPLX020": {"mode": "fixed", "dose": 1000, "unit": "mL", "frequency": "Rutin kullanımda haftada 1 kez", "status": "Sabit rutin doz mevcut", "lines": [["Ek kontrol", "Uygulama sonrası pH kontrolü önerilir"]], "note": "Agora ürün sayfası rutin kullanımda haftada 1 kez 1000 mL öneriyor; referans havuz hacmi belirtilmiyor."}, "WTR-COMPLXTAB3KG": {"mode": "instruction", "status": "Tablet eşdeğeri bilgisi var, hacim dozu yok", "lines": [["Ürün", "İyon tutucu tablet"], ["Eşdeğerlik", "1 kutu yaklaşık 10 L sıvı ürüne eşdeğer olarak tanımlanıyor"]], "note": "Havuz hacmine göre tablet adedi doğrulanmadığı için program miktar uydurmaz."}, "WTR-CLLPRTCTR20": {"mode": "instruction", "status": "Haftalık uygulama", "lines": [["Sıklık", "Haftalık"], ["Uygulama", "Denge deposundan veya hücreden önce dozaj pompasıyla"], ["Amaç", "Tuz klor hücresinde kışır önleme / kompleks yapma"]], "note": "Üretici sayfasında haftalık kullanım belirtiliyor ancak hacme bağlı miktar yayımlanmıyor."}, "WTR-SCLF22": {"mode": "filterRatio", "dose": 20, "unit": "L", "reference": 250, "status": "Filtre su hacmine göre otomatik", "lines": [["Bekleme", "İlk 8–12 saat; kirliliğe göre 6–12 saat ek bekleme"], ["Yüzey kullanımı", "Kirliliğe göre 1:6 ile 1:3 arasında seyreltme"]], "note": "Filtre temizliğinde yayınlanmış oran: 250 L filtre suyuna 20 L ürün."}, "WTR-SCALE025": {"mode": "instruction", "status": "Konsantre yüzey temizleyici", "lines": [["Uygulama", "Temizlenecek yüzeye uygula"], ["Bekleme", "Birkaç dakika"], ["Temizlik", "Fırçala veya bezle sil"], ["Durulama", "Bol suyla"]], "note": "Sayısal seyreltme oranı doğrulanmadığı için otomatik litre hesabı yapılmıyor."}, "WTR-SCALNF25": {"mode": "solutionRange", "lowPct": 20, "highPct": 25, "status": "%20–25 çalışma konsantrasyonu", "note": "Genel seyreltme aralığı %20–25. Ürünü suya ilave edin; ürüne su eklemeyin."}, "WTR-INCT2020": {"mode": "instruction", "status": "Oksidan seviyesine bağlı", "lines": [["Amaç", "Fazla klor / peroksit / diğer oksidanları inaktive etmek"], ["Uygulama", "Denge tankından havuza"], ["Kimyasal yapı", "Sülfitler"]], "note": "Üretici sayfasında oksidan ppm başına sayısal tüketim katsayısı yayımlanmıyor."}, "WTR-W0002020": {"mode": "winter", "status": "Kış bakım dozu mevcut", "note": "Başlangıç: 4 L / 100 m³. Takviye: her ay 2 L / 100 m³. Klor en az 1 ppm tutulmalı."}, "WTR-COTAB400": {"mode": "instruction", "status": "Fancoil temizlik/hijyen ürünü", "lines": [["Amaç", "Fancoil tavalarında ve hatlarda temizlik / hijyen"], ["Not", "Havuz suyuna dozlanan bir ürün değildir"]], "note": "Sayısal kullanım oranı doğrulanmadığı için miktar hesaplanmaz."}};
-
-const $ = (id) => document.getElementById(id);
-const fmt = (n, d=2) => Number(n).toLocaleString("tr-TR", {maximumFractionDigits:d});
-const clamp = (x, min, max) => Math.min(max, Math.max(min, x));
-const num = (id) => {
-  const value = String($(id).value).trim().replace(",", ".");
-  return value === "" ? NaN : Number(value);
-};
-
-const CalcCore = Object.freeze({
-  pureChlorineG(volumeM3, currentPpm, targetPpm) {
-    return volumeM3 * (targetPpm - currentPpm);
+<body><a class="skip" href="#calculator">Hesaplamaya geç</a>
+<header><div class="wrap"><div class="topline"><div class="logo">WTR + DIVERSEY · HAVUZ BAKIMI</div><span class="version">v7 · 7 Ekim 2026</span></div>
+<div class="hero"><div><h1>Doğru veri.<br><span>Açık doz hesabı.</span></h1><p>Havuz hacmini, ölçümlerini ve ürün etiketini birlikte kullan. Her sonuçta hesabın dayanağını ve birimlerini gör.</p></div><div class="hero-info"><div class="orb" aria-hidden="true"></div><div class="tag">Hesaptan uygulamaya</div><strong>Teorik miktar, ölçüm garantisi değildir.</strong><p>Klor tüketimi, ürünün yaşı ve su koşulları sonucu değiştirir. Etiketi takip et; uygulama sonrası yeniden ölç.</p><p>Asit ve hipoklorit ürünlerini karıştırma. Etiket ve SDS, uygulama yöntemi için önceliklidir.</p></div></div></div></header>
+<main class="wrap" id="calculator">
+<section class="card volume"><div><h2>01 · Havuz hacmi</h2><p class="muted">Tüm havuz hesaplarında bu hacim kullanılır.</p></div><label>Su hacmi (m³)<input id="volume" type="text" inputmode="decimal" placeholder="Örn. 100" autocomplete="off"></label><div class="volume-value" id="volumeHint">1 m³ = 1.000 litre</div>
+<details class="full"><summary>Ölçülerden hacim hesapla</summary><div class="fields dimension"><label>Uzunluk (m)<input id="length" inputmode="decimal" placeholder="10"></label><label>Genişlik (m)<input id="width" inputmode="decimal" placeholder="5"></label><label>Ortalama su derinliği (m)<input id="depth" inputmode="decimal" placeholder="2"></label></div><button class="secondary" id="dimensionCalc" type="button">Hacmi kullan</button><p class="hint" style="margin-top:12px">Dikdörtgen plan için uzunluk × genişlik × ortalama su derinliği. Havuzda bulunan gerçek suyu esas al.</p></details></section>
+<nav class="tabs" role="tablist" aria-label="Hesap türü"><button id="tab-chlorine" role="tab" aria-controls="panel-chlorine" aria-selected="true" data-tab="chlorine">Klor hesabı</button><button id="tab-ph" role="tab" aria-controls="panel-ph" aria-selected="false" tabindex="-1" data-tab="ph">pH / alkalinite</button><button id="tab-label" role="tab" aria-controls="panel-label" aria-selected="false" tabindex="-1" data-tab="label">Etiket / seyreltme</button><button id="tab-catalog" role="tab" aria-controls="panel-catalog" aria-selected="false" tabindex="-1" data-tab="catalog">Ürün kataloğu</button><button id="tab-sources" role="tab" aria-controls="panel-sources" aria-selected="false" tabindex="-1" data-tab="sources">Kaynaklar</button></nav>
+<div class="workspace"><section class="card" id="formCard">
+<section id="panel-chlorine" role="tabpanel" aria-labelledby="tab-chlorine"><div class="tag">02 · Etken madde hesabı</div><h2>Serbest klor artışı</h2><p class="lead">Hedefi sen belirlersin. Hesap, bu hedef için gereken teorik aktif klor miktarını verir.</p>
+<form id="chlorineForm" novalidate><div class="fields"><label class="full">Ürün<select id="chlorProduct"></select></label><label>Ürün biçimi<select id="chlorForm"><option value="liquid">Sıvı</option><option value="solid">Granül / toz</option></select></label><label>Etiketteki madde esası<select id="chlorIdentity"><option value="">Seçiniz</option><option value="available">Aktif klor (Cl₂ eşdeğeri)</option><option value="naclo">Sodyum hipoklorit (NaOCl)</option><option value="unknown">Belirsiz / etikette yazmıyor</option></select></label>
+<label>Mevcut serbest klor (ppm)<input id="currentCl" inputmode="decimal" placeholder="Örn. 0,5"></label><label>Hedef serbest klor (ppm)<input id="targetCl" inputmode="decimal" placeholder="Örn. 2"></label><label>Aktif klor konsantrasyon birimi<select id="chlorBasis"><option value="">Seçiniz</option><option value="ww">% kütle / kütle</option><option value="wv">% kütle / hacim (g/100 mL)</option><option value="gl">g/L aktif klor</option></select></label><label><span id="strengthLabel">Etiket konsantrasyonu</span><input id="strength" inputmode="decimal" placeholder="Etiketten gir"></label><label id="densityWrap">Ürün yoğunluğu (kg/L)<input id="density" inputmode="decimal" placeholder="Etiket / TDS değeri"><span class="hint">Sıvıda % kütle/kütle için zorunlu. Brüt bidon ağırlığından hesaplanmaz.</span></label></div>
+<label class="check"><input id="chlorConfirm" type="checkbox"><span>Konsantrasyonun aktif klor (Cl₂ eşdeğeri) olduğunu ve kullanılan ürünün etiketi/TDS’siyle eşleştiğini kontrol ettim.</span></label>
+<div class="btnrow" style="margin-top:20px"><button class="primary" type="submit">Teorik miktarı hesapla</button></div></form>
+<div class="note" id="chlorProductNote">Ürün seçimi bir konsantrasyon veya yoğunluk ön ayarı oluşturmaz. Güncel etiket değerlerini gir.</div>
+<details><summary>Şoklama ve ölçüm hakkında</summary><p class="note warning">Şoklama hedefi mevcut klorun sabit katı değildir. Amaç, serbest ve toplam klor, CYA, pH, ürün etiketi ve havuz koşulları birlikte değerlendirilmelidir. Bu araç şoklama hedefi belirlemez; ORP’yi ppm’e dönüştürmez.</p><p class="hint">1 ppm = 1 mg/L. 1 m³ suda 1 ppm teorik artış için 1 g aktif klor gerekir. Tablet çözünme hızı veya stabilizatör etkisi bu miktar hesabından çıkarılamaz.</p></details></section>
+<section id="panel-ph" role="tabpanel" aria-labelledby="tab-ph" hidden><div class="tag">02 · Koşullu etiket hesabı</div><h2>pH / alkalinite</h2><p class="lead">pH farkı tek başına doz belirlemez. Alkaliniteyi ölç; tam ürün etiketindeki doz oranını ve koşullarını kullan.</p><div class="note warning">Bu bölüm bir asit–baz denge modeli değildir. Sonuç, etiket oranının aritmetik ölçeklenmesidir; gerçekleşecek pH’ı garanti etmez.</div>
+<form id="phForm" novalidate><div class="fields"><label class="full">Hesap dayanağı<select id="phPreset"><option value="manual">Kendi ürün etiketimi giriyorum</option><option value="wtrPowder">WTR TOZ pH MINUS · üretici TDS oranı</option></select></label><label class="full">Ürün adı<input id="phProductName" placeholder="Tam ürün adı"></label><label>Mevcut pH<input id="currentPh" inputmode="decimal" placeholder="Örn. 7,8"></label><label>Hedef pH<input id="targetPh" inputmode="decimal" placeholder="Örn. 7,4"></label><label>Ölçülen toplam alkalinite (mg/L CaCO₃)<input id="ta" inputmode="decimal" placeholder="Örn. 100"></label><label>Etiketteki pH adımı<input id="phStep" inputmode="decimal" placeholder="Örn. 0,1"></label><label>Etiket referans hacmi (m³)<input id="phRef" inputmode="decimal" placeholder="Örn. 100"></label><label>Bu referans için etiket dozu<input id="phDose" inputmode="decimal" placeholder="Örn. 1,5"></label><label>Doz birimi<select id="phUnit"><option value="kg">kg</option><option value="g">g</option><option value="L">L</option><option value="mL">mL</option></select></label><label>Etiket / TDS kaynağı<input id="phSource" placeholder="Belge adı, sürüm ve tarih veya bağlantı"></label><label>Etiket alkalinite alt sınırı (mg/L CaCO₃)<input id="taMin" inputmode="decimal" placeholder="Örn. 80"></label><label>Etiket alkalinite üst sınırı (mg/L CaCO₃)<input id="taMax" inputmode="decimal" placeholder="Örn. 120"></label></div>
+<label class="check"><input id="phConfirm" type="checkbox"><span>Etiket bu pH adımı ve alkalinite aralığı için açık bir doz oranı veriyor; diğer ürün ve uygulama koşullarını da kontrol ettim.</span></label><button class="primary" style="margin-top:20px" type="submit">Etiket oranını ölçekle</button></form><p class="hint" id="phPresetNote" style="margin-top:16px">Etikette referans hacim, pH adımı veya alkalinite koşulu belirsizse sayısal doz üretilemez. Alkalinite artırma/azaltma için etikette belirtilen ppm başına oranı Etiket / seyreltme sekmesinde ölçekleyebilirsin.</p></section>
+<section id="panel-label" role="tabpanel" aria-labelledby="tab-label" hidden><div class="tag">02 · Etiketi ölçekle</div><h2>Bakım ve seyreltme</h2><p class="lead">Dozu veya çalışma çözeltisini ürün etiketi belirler. Burada verdiğin oran ölçeklenir.</p><label>Hesap türü<select id="labelMode"><option value="ratio">Etiket dozu / hacim / yüzey / ekipman</option><option value="dilution">Çalışma çözeltisi · açıkça % hacim/hacim</option></select></label>
+<div class="note"><strong>Doğrulanan WTR CLEAR oranı:</strong> Üretici 100 m³ için 1 L, haftada 1–2 uygulama belirtir. <button type="button" class="secondary" id="useClear" style="margin-top:10px">WTR CLEAR oranını doldur</button><br><a href="https://www.agorakimya.com.tr/product/wtr-clear-20-kg-20-lt/" target="_blank" rel="noopener noreferrer">Üretici kaynağı</a></div>
+<form id="labelForm" novalidate><div class="fields"><label class="full">Ürün<select id="labelProduct"></select></label><label class="full">Etiket / TDS kaynağı<input id="labelSource" placeholder="Belge adı, sürüm ve tarih veya bağlantı"></label></div><div id="ratioFields"><div class="fields"><label>Etiket dozu<input id="labelDose" inputmode="decimal" placeholder="Etiketten gir"></label><label>Ürün miktar birimi<select id="labelUnit"><option value="L">L</option><option value="mL">mL</option><option value="kg">kg</option><option value="g">g</option><option value="tablet">tablet</option></select></label><label>Referans türü<select id="labelBasis"><option value="pool">m³ havuz suyu</option><option value="filter">L filtre / sistem suyu</option><option value="solution">L çalışma çözeltisi</option><option value="surface">m² yüzey</option><option value="equipment">adet ekipman</option></select></label><label>Etiket referans miktarı<input id="labelRef" inputmode="decimal" placeholder="Örn. 100"></label><label>Hedef miktar<input id="labelTarget" inputmode="decimal" readonly><span class="hint" id="labelTargetHint">Üstteki havuz hacmi kullanılır.</span></label><label>Etiketteki periyot / amaç<input id="labelPurpose" placeholder="Örn. tek uygulama / haftalık / filtre temizliği"></label></div></div>
+<div id="dilutionFields" hidden><div class="note">Yalnızca etikette açıkça ürünün son çözelti içindeki hacim yüzdesi (% h/h) yazıyorsa kullan. % k/k, % k/h ve “1:10” ifadeleri bu hesapla aynı değildir.</div><div class="fields"><label>Son çalışma çözeltisi hacmi (L)<input id="dilutionTotal" inputmode="decimal" placeholder="Örn. 10"></label><label>Ürün hacim yüzdesi (% h/h)<input id="dilutionPct" inputmode="decimal" placeholder="Örn. 5"></label></div></div>
+<label class="check"><input id="labelConfirm" type="checkbox"><span>Oranı, birimleri ve uygulama alanını ürün etiketiyle kontrol ettim. Seyreltmede oran açıkça ürünün son çözeltideki % hacim/hacim değeridir.</span></label><button class="primary" type="submit" style="margin-top:20px">Etiket hesabını yap</button></form><div class="note">Tablet sonucu yukarı yuvarlanmaz. Çözelti hacimleri her üründe toplamsal değildir; hesap son hacme tamamlama içindir. Hazırlama sırası ve ekipman için etiketi/SDS’yi izle.</div></section>
+<section id="panel-catalog" role="tabpanel" aria-labelledby="tab-catalog" hidden><div class="tag">Ürün dizini</div><h2>WTR & Diversey</h2><p class="lead">Önceki sürümdeki ürün isimleri ve kodları korunmuştur. Liste, güncel satış durumu veya etikete uygun kullanım onayı değildir.</p><div class="catalog-toolbar"><label>Ürün / kod / kategori ara<input id="catalogSearch" type="search" placeholder="Örn. CALHYPO"></label><label>Marka<select id="catalogBrand"><option value="">Tüm markalar</option><option>WTR</option><option>Diversey</option></select></label></div><p class="hint" id="catalogCount"></p><div class="catalog" id="catalogGrid"></div></section>
+<section id="panel-sources" role="tabpanel" aria-labelledby="tab-sources" hidden><div class="tag">Kaynak ve sınırlar</div><h2>Hesabın dayanağı</h2><p class="lead">Ürün bilgisi, etiket oranı ve teorik formül ayrı tutulur. Önceki sürümdeki kaynağı görülmeyen etiket fotoğrafı iddiaları doğrulanmış ön ayar olarak kullanılmaz.</p><ul class="source-list">
+<li><a href="https://www.agorakimya.com.tr/product/wtr-toz-ph-minus-25-kg/" target="_blank" rel="noopener noreferrer">Agora Kimya · WTR TOZ pH MINUS</a><br>Üretici oranı: TA 80–120 mg/L CaCO₃ koşulunda, 100 m³ için 0,1 pH adımında 1,5 kg. Yalnızca koşullu etiket ölçekleme olarak kullanılır.</li>
+<li><a href="https://agorakimya.com.tr/images2/TDS_-_Havuz_KimyasallarY_-_WTR_KS.pdf" target="_blank" rel="noopener noreferrer">Agora Kimya · WTR KS TDS</a><br>Ürün adı veya tek başına yüzde bilgisi g/L’yi belirlemez. Güncel ürünündeki aktif klor esası, yüzde türü ve yoğunluğu doğrula.</li>
+<li><a href="https://www.agorakimya.com.tr/products/havuz-ve-spa/wtr/" target="_blank" rel="noopener noreferrer">Agora Kimya · WTR ürün sayfaları</a><br>Bakım ve ekipman ürünleri için tam ürünün etiket/TDS/SDS’sini kullan.</li>
+<li><a href="https://www.cdc.gov/healthy-swimming/about/home-pool-and-hot-tub-water-treatment-and-testing.html" target="_blank" rel="noopener noreferrer">CDC · Havuz suyu ölçümü ve dezenfeksiyon</a><br>Serbest klor ve pH birlikte ölçülür; CYA dezenfeksiyon koşullarını etkiler. Bu site havuzun kullanım için uygunluğunu belirlemez.</li>
+<li><a href="https://www.cdc.gov/healthy-swimming/toolkit/pool-chemical-safety.html" target="_blank" rel="noopener noreferrer">CDC · Havuz kimyasal güvenliği</a><br>Kimyasalların karıştırılması, özellikle asit ve hipoklorit, tehlikelidir. Uygulama ve depolama için ürün güvenlik belgelerini takip et.</li>
+</ul><div class="note"><strong>Formüller:</strong> Aktif klor (g) = hacim (m³) × serbest klor farkı (mg/L). Sıvı % k/k için aktif klor (g/L) = yüzde × 10 × yoğunluk (kg/L). % k/h için g/L = yüzde × 10. Etiket miktarı = etiket dozu × hedef miktar ÷ referans miktar.</div><p class="hint">Kaynak kontrol tarihi: 7 Ekim 2026. Kullanıcının girdiği belge bilgisi bu araç tarafından otomatik doğrulanmaz. Hesaplar yerel çalışır; girdiler bir sunucuya gönderilmez.</p></section>
+</section><aside class="card result" id="resultCard" aria-live="polite" aria-atomic="true"><div class="tag" id="resultTag">03 · Sonuç</div><h2 id="resultTitle">Hesabın burada görünecek</h2><div id="resultContent"><p class="result-empty">Hacmi ve gereken etiket bilgilerini gir. Sonuçla birlikte kullanılan formülü de göreceksin.</p></div><div class="btnrow" id="resultActions" hidden><button type="button" class="secondary" id="printResult">Yazdır / PDF</button></div></aside></div>
+</main><footer><div class="wrap"><span>Havuz Kimyasal Hesap Makinesi · v7</span><span>Etiket esaslı hesap · Uygulama sonrası yeniden ölçüm</span></div></footer>
+<script>"use strict";
+const PRODUCTS = [{"brand":"WTR","name":"WTR %56 25 KG","sku":"WTR-56000025","category":"Klor / Dezenfeksiyon"},{"brand":"WTR","name":"WTR %90 25 KG","sku":"WTR-90000025","category":"Klor / Dezenfeksiyon"},{"brand":"WTR","name":"WTR CALHYPO 25 KG","sku":"WTR-CHYPO025","category":"Klor / Dezenfeksiyon"},{"brand":"WTR","name":"WTR KS 25 KG / 20 LT","sku":"WTR-KS000025","category":"Klor / Dezenfeksiyon"},{"brand":"WTR","name":"WTR TOZ PH MINUS 25 KG","sku":"WTR-TPHMS025","category":"pH Düzenleme"},{"brand":"WTR","name":"WTR PH MINUS L 25 KG / 20LT","sku":"WTR-PHML0025","category":"pH Düzenleme"},{"brand":"WTR","name":"WTR PH MINUS LIQUIDE S 25 KG/20LT","sku":"WTR-PHMLQS25","category":"pH Düzenleme"},{"brand":"WTR","name":"WTR ALKA MINUS 29 KG/20LT","sku":"WTR-ALKMN025","category":"pH / Alkalinite"},{"brand":"WTR","name":"WTR ALKA PLUS 25 KG","sku":"WTR-ALKPLS25","category":"pH / Alkalinite"},{"brand":"WTR","name":"WTR CLEAN TAB 1,6 KG","sku":"WTR-CLEANTAB16KG","category":"Bakım"},{"brand":"WTR","name":"WTR PH PLUS SIVI NAOH 20 LT / 30 KG","sku":"WTR-PHPLS20","category":"pH Düzenleme"},{"brand":"WTR","name":"WTR BST 100 20 KG /20 LT","sku":"WTR-BST10020","category":"Yosun Önleyici"},{"brand":"WTR","name":"WTR BST 40 20 KG /20 LT","sku":"WTR-BST04020","category":"Yosun Önleyici"},{"brand":"WTR","name":"WTR POOLSAN 1 LT","sku":"WTR-POOLSAN1","category":"Dezenfeksiyon / Yosun"},{"brand":"WTR","name":"WTR QAC KH SPREY","sku":"WTR-QACKHS01","category":"Yüzey Dezenfeksiyonu"},{"brand":"WTR","name":"WTR QAC 100","sku":"WTR-QAC10020","category":"Yüzey Dezenfeksiyonu"},{"brand":"WTR","name":"WTR QAC 100 PLUS","sku":"WTR-QAC100PLS20","category":"Ayak Havuzu Hijyeni"},{"brand":"WTR","name":"WTR CLEAR 20 KG /20 LT","sku":"WTR-CLR00020","category":"Berraklaştırıcı / Topaklayıcı"},{"brand":"WTR","name":"WTR CLEAR TAB","sku":"WTR-CLRTAB","category":"Berraklaştırıcı / Topaklayıcı"},{"brand":"WTR","name":"WTR CLEAN SHOCK 1 LT","sku":"WTR-CLNSHOCK","category":"Bakım"},{"brand":"WTR","name":"WTR CLEAR 200 20 LT","sku":"WTR-CLR20020","category":"Berraklaştırıcı"},{"brand":"WTR","name":"WTR FLOCK 20 LT","sku":"WTR-FLCK20","category":"Çöktürücü / Topaklayıcı"},{"brand":"WTR","name":"WTR FLOCK 14 22 KG / 20 LT","sku":"WTR-FLCK1422","category":"Çöktürücü / Topaklayıcı"},{"brand":"WTR","name":"WTR FLOCK TABLET 1600 GR","sku":"WTR-FLCKTBL","category":"Çöktürücü / Topaklayıcı"},{"brand":"WTR","name":"WTR FLOCK 170 28 KG / 20LT","sku":"WTR-FLCK1728","category":"Çöktürücü / Topaklayıcı"},{"brand":"WTR","name":"WTR COMPLEX 21 KG / 20 LT","sku":"WTR-CMPLX020","category":"İyon Tutucu"},{"brand":"WTR","name":"WTR COMPLEX TAB 3 KG","sku":"WTR-COMPLXTAB3KG","category":"İyon Tutucu / Bakım"},{"brand":"WTR","name":"WTR CELL PROTECTOR 20 L","sku":"WTR-CLLPRTCTR20","category":"Tuz Klor Hücresi Bakımı"},{"brand":"WTR","name":"WTR CF 100 25 KG","sku":"WTR-CF010025","category":"Filtre Temizleyici"},{"brand":"WTR","name":"WTR SCALE F 22 KG / 20LT","sku":"WTR-SCLF22","category":"Yüzey / Kireç Temizliği"},{"brand":"WTR","name":"WTR SCALE 25 KG / 20 LT","sku":"WTR-SCALE025","category":"Yüzey / Kireç Temizliği"},{"brand":"WTR","name":"WTR SCALE NF 25 KG / 20LT","sku":"WTR-SCALNF25","category":"Yüzey / Ekipman Temizliği"},{"brand":"WTR","name":"WTR CELL CLEAN 10 KG","sku":"WTR-CELCLN010","category":"Tuz Klor Hücresi Temizliği"},{"brand":"WTR","name":"WTR INACT 20 20 LT / 23 KG","sku":"WTR-INCT2020","category":"Oksidan İnaktivasyonu"},{"brand":"WTR","name":"WTR W-20 20 KG /20 LT","sku":"WTR-W0002020","category":"Kışlık Bakım"},{"brand":"WTR","name":"WTR COILTAB","sku":"WTR-COTAB400","category":"Ekipman Bakımı"},{"brand":"WTR","name":"WTR COOL CLEAN 20 LT","sku":"WTR-COOCLN20","category":"Coil / Metal Temizliği"},{"brand":"Diversey","name":"Divergard Dichlor","sku":"70024060 / 70021080","category":"Klor / Dezenfeksiyon"},{"brand":"Diversey","name":"Divergard TriChlor","sku":"70024061 / 70021099","category":"Klor / Dezenfeksiyon"},{"brand":"Diversey","name":"Divergard CaHypo","sku":"70024011 / 70024062 / 70022842","category":"Klor / Dezenfeksiyon"},{"brand":"Diversey","name":"Divergard CaHypo Tabs","sku":"70021071","category":"Klor / Tablet"},{"brand":"Diversey","name":"Divergard TriChlor Tabs","sku":"70021074 / 70021075","category":"Klor / Tablet"},{"brand":"Diversey","name":"Divergard Triplex Tabs","sku":"70022102","category":"Klor / Tablet"},{"brand":"Diversey","name":"Divergard Bro","sku":"70021067","category":"Dezenfeksiyon / Brom"},{"brand":"Diversey","name":"Divergard pH Down","sku":"70024042 / 70021088","category":"pH Düzenleme"},{"brand":"Diversey","name":"Divergard pH Up","sku":"70021091","category":"pH Düzenleme"},{"brand":"Diversey","name":"Divergard Alka Break","sku":"70022092","category":"pH / Alkalinite"},{"brand":"Diversey","name":"Divergard Fast Floc","sku":"70023397 / 70023398","category":"Çöktürücü / Flok"},{"brand":"Diversey","name":"Divergard Super Floc","sku":"70024043 / 70023400","category":"Çöktürücü / Flok"},{"brand":"Diversey","name":"Divergard Pool Clear","sku":"70023399 / 70021094","category":"Berraklaştırıcı"},{"brand":"Diversey","name":"Divergard Pool Clear Plus","sku":"70022093","category":"Berraklaştırıcı"},{"brand":"Diversey","name":"Divergard CleanFil","sku":"70021077","category":"Filtre / Yüzey Temizliği"},{"brand":"Diversey","name":"Divergard Filter Clean","sku":"Türkiye satış ürünü","category":"Filtre / Yüzey Temizliği"},{"brand":"Diversey","name":"Divergard Guardion","sku":"70021086","category":"İyon / Sertlik Kontrolü"},{"brand":"Diversey","name":"Divergard Algae Guard","sku":"70024010 / 70021059","category":"Yosun Önleyici"},{"brand":"Diversey","name":"Divergard Algae Guard Plus","sku":"70021062","category":"Yosun Önleyici"},{"brand":"Diversey","name":"Divergard 222","sku":"DIVERGARD-222","category":"Yardımcı Temizlik"},{"brand":"Diversey","name":"Divergard 41266","sku":"DIVERGARD-41266","category":"Yardımcı Dezenfeksiyon / Havuz dışı"}];
+const $=id=>document.getElementById(id);
+const format=(n,d=3)=>Number(n).toLocaleString('tr-TR',{maximumFractionDigits:d});
+const escapeHtml=text=>String(text).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+// No thousands separators, exponents, hexadecimal or implicit empty-to-zero conversion.
+const Core=Object.freeze({
+  parse(text){
+    const s=String(text).trim();
+    if(!/^(?:\d+(?:[.,]\d+)?|[.,]\d+)$/.test(s))throw Error('Yalnızca ondalık sayı gir. Binlik ayırıcı, boşluk veya üs kullanma.');
+    // Dot followed by exactly three digits is ambiguous for Turkish users.
+    if(/^\d+\.\d{3}$/.test(s))throw Error('Nokta ile üç hane belirsiz: binlik ayırıcı kullanma; ondalık için virgül kullan.');
+    const n=Number(s.replace(',','.'));if(!Number.isFinite(n))throw Error('Geçerli ve sonlu bir sayı gir.');return n;
   },
-  granuleG(volumeM3, currentPpm, targetPpm, activeFraction) {
-    return this.pureChlorineG(volumeM3, currentPpm, targetPpm) / activeFraction;
+  chlorine(v,c,t,strength,basis,form,density){
+    if(![v,c,t,strength].every(Number.isFinite)||v<=0||c<0||t<0||strength<=0)throw Error('Hacim ve konsantrasyon pozitif, klor değerleri sıfır veya pozitif olmalı.');
+    if(!['ww','wv','gl'].includes(basis))throw Error('Konsantrasyon birimini seç.');
+    if(!['liquid','solid'].includes(form))throw Error('Ürün biçimini seç.');
+    if(basis!=='gl'&&strength>100)throw Error('Yüzde 100’den büyük olamaz.');
+    if(form==='solid'&&basis!=='ww')throw Error('Granül / toz ürün için aktif klor % kütle/kütle gerekir.');
+    if(form==='liquid'&&basis==='ww'&&(!Number.isFinite(density)||density<=0))throw Error('Sıvıda % kütle/kütle hesabı için doğrulanmış yoğunluk gir.');
+    const delta=Math.max(0,t-c),activeG=v*delta;
+    const gl=form==='liquid'?(basis==='gl'?strength:strength*10*(basis==='ww'?density:1)):null;
+    const amount=form==='solid'?activeG/(strength/100):activeG/gl;
+    const unit=form==='solid'?'g':'L';
+    const productKg=form==='solid'?amount/1000:basis==='ww'?amount*density:null;
+    if(!Number.isFinite(amount)||!Number.isFinite(activeG)||gl!==null&&!Number.isFinite(gl)||productKg!==null&&!Number.isFinite(productKg))throw Error('Girdiler hesap sınırını aşıyor.');
+    return {activeG,delta,amount,unit,gl,productKg,noAddition:t<=c};
   },
-  calhypoG(volumeM3, currentPpm, targetPpm) {
-    return (volumeM3 / 100) * (targetPpm - currentPpm) * 150;
+  scale(dose,target,ref){if(![dose,target,ref].every(Number.isFinite)||dose<=0||target<=0||ref<=0)throw Error('Doz, hedef ve referans sıfırdan büyük olmalı.');const result=dose*target/ref;if(!Number.isFinite(result))throw Error('Girdiler hesap sınırını aşıyor.');return result;},
+  ph(v,c,t,ta,taMin,taMax,dose,ref,step){
+    if(![c,t,ta,taMin,taMax,step].every(Number.isFinite)||c<0||c>14||t<0||t>14||ta<0||taMin<0||taMax<taMin||step<=0||step>14)throw Error('pH 0–14, alkalinite sıfır veya pozitif olmalı; etiket aralığını ve pH adımını kontrol et.');
+    if(ta<taMin||ta>taMax)throw Error('Ölçülen alkalinite etiket koşulları dışında. Bu oranla doz hesaplanamaz.');
+    const drop=c-t;if(drop<=0)throw Error('Bu hesap pH düşürme içindir. Mevcut pH hedeften yüksek olmalı.');
+    const result=this.scale(dose,v,ref)*(drop/step);if(!Number.isFinite(result))throw Error('Girdiler hesap sınırını aşıyor.');return {drop,result};
   },
-  liquidChlorineL12(volumeM3, currentPpm, targetPpm) {
-    return this.pureChlorineG(volumeM3, currentPpm, targetPpm) / 120;
-  },
-  phSteps(currentPh, targetPh) {
-    return (currentPh - targetPh) / 0.1;
-  },
-  phKg(volumeM3, currentPh, targetPh, kgPer100m3Per01) {
-    return (volumeM3 / 100) * this.phSteps(currentPh, targetPh) * kgPer100m3Per01;
-  },
-  phKgRange(volumeM3, currentPh, targetPh, lowKg, highKg) {
-    return {
-      low: this.phKg(volumeM3, currentPh, targetPh, lowKg),
-      high: this.phKg(volumeM3, currentPh, targetPh, highKg),
-    };
-  },
-  poolRatio(volumeM3, dose, referenceM3) {
-    return dose * volumeM3 / referenceM3;
-  },
-  solutionPercent(totalL, pct) {
-    const productL = totalL * pct / 100;
-    return { productL, waterL: totalL - productL };
-  },
-  solutionPercentRange(totalL, lowPct, highPct) {
-    const lowProductL = totalL * lowPct / 100;
-    const highProductL = totalL * highPct / 100;
-    return {
-      lowProductL,
-      highProductL,
-      lowWaterL: totalL - highProductL,
-      highWaterL: totalL - lowProductL,
-    };
-  },
-  clearTab(volumeM3) {
-    const raw = volumeM3 / 50;
-    return { raw, whole: Math.ceil(raw) };
-  },
-  cf100Kg(filterWaterL) {
-    return filterWaterL * 0.10;
-  },
-  coolClean(productL) {
-    return { maxWaterL: productL * 10, maxTotalL: productL * 11 };
-  },
-  w20(volumeM3) {
-    return {
-      initialL: volumeM3 / 100 * 4,
-      monthlyL: volumeM3 / 100 * 2,
-    };
-  },
-  alkaBreak(volumeM3, currentPh, targetPh) {
-    const steps = this.phSteps(currentPh, targetPh);
-    const lowKg = (volumeM3 / 100) * steps * 0.5;
-    const highKg = (volumeM3 / 100) * steps * 1.5;
-    const densityKgL = 1.45;
-    return {
-      lowKg, highKg,
-      lowL: lowKg / densityKgL,
-      highL: highKg / densityKgL,
-    };
-  },
-  poolClearPlus(volumeM3) {
-    return {
-      primaryL: volumeM3 / 100 * 2,
-      routineML: volumeM3 / 100 * 200,
-    };
-  },
-  diverseyCaHypo(volumeM3) {
-    return {
-      routineG: volumeM3 / 100 * 250,
-      shockG: volumeM3 / 100 * 500,
-    };
-  },
+  dilution(total,pct){if(![total,pct].every(Number.isFinite)||total<=0||pct<=0||pct>100)throw Error('Son hacim pozitif, % hacim/hacim değeri 0’dan büyük ve en fazla 100 olmalı.');const product=total*pct/100;if(!Number.isFinite(product))throw Error('Girdiler hesap sınırını aşıyor.');return {product,total};}
 });
-
-
-let resultAnchor = null;
-function placeResult() {
-  const card = $("resultCard");
-  if (window.matchMedia("(max-width: 850px)").matches && resultAnchor?.isConnected) {
-    if (resultAnchor.nextElementSibling !== card) resultAnchor.after(card);
-  } else {
-    const aside = document.querySelector(".layout > aside");
-    if (card.parentElement !== aside) aside.prepend(card);
+window.HavuzCore=Core;
+let resultValid=false,activeTab='chlorine';
+function value(id){try{return Core.parse($(id).value);}catch(e){const name=$(id).closest('label')?.childNodes[0]?.textContent.trim()||'Alan';throw Error(name+': '+e.message);}}
+function positive(id){const n=value(id);if(n<=0)throw Error('Hacim ve miktarlar sıfırdan büyük olmalı.');return n;}
+function needed(id,message){const s=$(id).value.trim();if(!s)throw Error(message);return s;}
+function checked(id,message){if(!$(id).checked)throw Error(message);}
+function result({title,amount,rows=[],formula='',note='',error=false}){
+  $('resultCard').classList.toggle('error',error);$('resultTitle').textContent=title;
+  $('resultTag').textContent=error?'Kontrol gerekli':'03 · Hesap sonucu';
+  $('resultContent').innerHTML=(amount?'<div class="amount">'+escapeHtml(amount)+'</div>':'')+'<dl>'+rows.map(([key,val])=>'<div class="result-row"><dt>'+escapeHtml(key)+'</dt><dd>'+escapeHtml(val)+'</dd></div>').join('')+'</dl>'+(formula?'<div class="formula">'+escapeHtml(formula)+'</div>':'')+(note?'<p class="result-note">'+escapeHtml(note)+'</p>':'');
+  resultValid=!error;$('resultActions').hidden=error;placeResult();
+}
+function run(event,fn){event.preventDefault();try{fn();}catch(e){result({title:'Girdileri kontrol et',amount:e.message,error:true,note:'Eksik veya belirsiz bilgilerle sayısal uygulama miktarı üretilmedi.'});}}
+function invalidate(){if(!resultValid)return;resultValid=false;$('resultCard').classList.remove('error');$('resultTag').textContent='Girdi değişti';$('resultTitle').textContent='Yeniden hesapla';$('resultContent').innerHTML='<p class="result-empty">Önceki sonuç artık geçerli değil. Güncel girdilerle tekrar hesapla.</p>';$('resultActions').hidden=true;}
+function placeResult(){const card=$('resultCard'),panel=$('panel-'+activeTab);if(matchMedia('(max-width:760px)').matches&&['chlorine','ph','label'].includes(activeTab)){const form=panel.querySelector('form');if(card.previousElementSibling!==form)form.after(card);}else{const ws=document.querySelector('.workspace');if(card.parentElement!==ws)ws.append(card);}}
+function setTab(name,focus=false){activeTab=name;document.querySelectorAll('[role=tab]').forEach(b=>{const selected=b.dataset.tab===name;b.setAttribute('aria-selected',String(selected));b.tabIndex=selected?0:-1;if(selected&&focus)b.focus();});document.querySelectorAll('[role=tabpanel]').forEach(p=>p.hidden=p.id!=='panel-'+name);invalidate();placeResult();}
+function volumeHint(){try{const v=value('volume');$('volumeHint').textContent=v>0?format(v,3)+' m³ = '+format(v*1000,0)+' litre':'1 m³ = 1.000 litre';}catch{$('volumeHint').textContent='Ondalık için virgül kullan; binlik ayırıcı girme.';}syncLabelTarget();}
+function fillProducts(id,items){const s=$(id);s.replaceChildren();const blank=document.createElement('option');blank.value='custom';blank.textContent='Diğer ürün / kendi etiketim';s.append(blank);items.forEach(p=>{const o=document.createElement('option');o.value=String(PRODUCTS.indexOf(p));o.textContent=p.name;s.append(o);});}
+function selected(id){const n=Number($(id).value);return $(id).value==='custom'?null:PRODUCTS[n];}
+function chlorineUI(){
+  const p=selected('chlorProduct'),solid=$('chlorForm').value==='solid';
+  [...$('chlorBasis').options].forEach(o=>o.disabled=solid&&o.value!==''&&o.value!=='ww');
+  if(solid&&$('chlorBasis').value&&$('chlorBasis').value!=='ww')$('chlorBasis').value='';
+  $('densityWrap').hidden=solid||$('chlorBasis').value!=='ww';
+  $('strengthLabel').textContent=$('chlorBasis').value==='gl'?'Aktif klor (g/L)':'Aktif klor yüzdesi (%)';
+  $('chlorProductNote').textContent=p?.name.includes('WTR KS')?'WTR KS TDS’sindeki yüzde bilgisi tek başına g/L değildir. Önceki %12 = 120 g/L varsayımı kaldırıldı. Tam ürünün güncel etiketini doğrula.':'Ürün seçimi konsantrasyon veya yoğunluk atamaz. Adında %56 / %90 yazsa bile güncel aktif klor esasını etiketten doğrula.';
+}
+function changeChlorProduct(){const p=selected('chlorProduct');if(p){$('chlorForm').value=/WTR KS/.test(p.name)?'liquid':'solid';}$('strength').value='';$('density').value='';$('chlorIdentity').value='';$('chlorBasis').value='';$('chlorConfirm').checked=false;chlorineUI();}
+function chlorineCalc(){
+  const v=positive('volume'),c=value('currentCl'),t=value('targetCl');
+  if($('chlorIdentity').value!=='available')throw Error('Aktif klor (Cl₂ eşdeğeri) değeri gerekli. NaOCl yüzdesini aktif klor yüzdesi yerine kullanma; üreticiden aktif klor esasını doğrula.');
+  checked('chlorConfirm','Aktif klor esasını ve ürün etiketini doğrula.');
+  const form=$('chlorForm').value,basis=$('chlorBasis').value,s=positive('strength');
+  const density=form==='liquid'&&basis==='ww'?positive('density'):undefined;
+  const r=Core.chlorine(v,c,t,s,basis,form,density),p=selected('chlorProduct');
+  const rows=[['Ürün',p?.name||'Kullanıcının ürün etiketi'],['Havuz',format(v)+' m³ · '+format(v*1000,0)+' L'],['Serbest klor',format(c)+' → '+format(t)+' ppm'],['Hesaplanan artış',format(r.delta)+' ppm'],['Aktif klor ihtiyacı',format(r.activeG)+' g'],['Konsantrasyon esası',basis==='ww'?'%'+format(s)+' kütle/kütle':basis==='wv'?'%'+format(s)+' kütle/hacim':format(s)+' g/L']];
+  if(density!==undefined)rows.push(['Girdi yoğunluğu',format(density)+' kg/L']);
+  if(r.gl!==null)rows.push(['Aktif klor konsantrasyonu',format(r.gl)+' g/L']);
+  if(r.productKg!==null)rows.push(['Ürün kütlesi',format(r.productKg,4)+' kg']);
+  const formula=r.noAddition?'Hedef ≤ mevcut serbest klor: ek klor artışı hesabı 0.':form==='solid'?format(v)+' × ('+format(t)+' − '+format(c)+') ÷ ('+format(s)+' / 100) = '+format(r.amount)+' g':format(v)+' × ('+format(t)+' − '+format(c)+') ÷ '+format(r.gl)+' = '+format(r.amount,4)+' L';
+  result({title:r.noAddition?'Ek klor artışı hesaplanmadı':'Teorik ürün miktarı',amount:format(r.amount,form==='liquid'?4:2)+' '+r.unit,rows,formula,note:r.noAddition?'Bu sonuç suyun uygun olduğunu göstermez. Klor azaltma / nötralizasyon hesabı yapılmadı.':'Girdi etiketine dayalı teorik miktardır. Ürün bozulması ve suyun klor tüketimi hesaba katılmaz; şoklama veya havuzu kullanıma açma dozu değildir. Etiket uygulama yöntemini izle ve yeniden ölç.'});
+}
+const phPresetFields=['phProductName','phStep','phRef','phDose','phUnit','phSource','taMin','taMax'];
+function phPresetUI(){
+  const preset=$('phPreset').value==='wtrPowder';
+  const values={phProductName:'WTR TOZ pH MINUS',phStep:'0,1',phRef:'100',phDose:'1,5',phUnit:'kg',phSource:'Agora WTR TOZ pH MINUS TDS · kaynak kontrolü 07.10.2026',taMin:'80',taMax:'120'};
+  phPresetFields.forEach(id=>{const el=$(id);if(el.tagName==='SELECT'){el.disabled=preset;el.value='kg';}else{el.readOnly=preset;el.value=preset?values[id]:'';}});
+  $('phConfirm').checked=false;$('phPresetNote').textContent=preset?'Üretici TDS’sinin koşullu oranı: TA 80–120 mg/L CaCO₃; 100 m³ için 0,1 pH adımında 1,5 kg. Sonuç etiket ölçeklemesidir. Etiket diğer uygulama koşullarıyla birlikte izlenmelidir.':'Etikette hacim, pH adımı veya alkalinite koşulu belirsizse sayısal doz üretilemez. Alkalinite doz oranlarını Etiket / seyreltme sekmesinde ölçekleyebilirsin.';
+}
+function phCalc(){
+  const name=needed('phProductName','Tam ürün adını gir.'),source=needed('phSource','Etiket / TDS kaynağını belirt.');checked('phConfirm','Etiket oranını ve uygulama koşullarını kontrol et.');
+  const v=positive('volume'),c=value('currentPh'),t=value('targetPh'),ta=value('ta'),lo=value('taMin'),hi=value('taMax'),step=positive('phStep'),dose=positive('phDose'),ref=positive('phRef');
+  const r=Core.ph(v,c,t,ta,lo,hi,dose,ref,step),unit=$('phUnit').value;
+  result({title:'Etiket oranının ölçeklenmesi',amount:format(r.result)+' '+unit,rows:[['Ürün',name],['Havuz',format(v)+' m³ · '+format(v*1000,0)+' L'],['pH',format(c)+' → '+format(t)],['Ölçülen alkalinite',format(ta)+' mg/L CaCO₃'],['Etiket TA koşulu',format(lo)+'–'+format(hi)+' mg/L CaCO₃'],['Etiket oranı',format(dose)+' '+unit+' / '+format(ref)+' m³ / '+format(step)+' pH'],['Kaynak',source]],formula:format(dose)+' × ('+format(v)+' / '+format(ref)+') × (('+format(c)+' − '+format(t)+') / '+format(step)+') = '+format(r.result)+' '+unit,note:'Bu değer, belirtilen etiket oranının aritmetik karşılığıdır; tam miktarın tek seferde verilmesi talimatı değildir. pH tepkisi doğrusal olmayabilir. Üretici uygulama adımlarını izle, sirkülasyon sonrası pH ve alkaliniteyi yeniden ölç. Sonuç hedef pH garantisi değildir.'});
+}
+const bases={pool:'m³ havuz suyu',filter:'L filtre / sistem suyu',solution:'L çalışma çözeltisi',surface:'m² yüzey',equipment:'adet ekipman'};
+function syncLabelTarget(){const isPool=$('labelBasis').value==='pool';$('labelTarget').readOnly=isPool;if(isPool)$('labelTarget').value=$('volume').value;$('labelTargetHint').textContent=isPool?'Üstteki havuz hacmi kullanılır.':'Referansla aynı birimde hedef miktarı gir.';}
+function labelModeUI(){const dilution=$('labelMode').value==='dilution';$('ratioFields').hidden=dilution;$('dilutionFields').hidden=!dilution;$('labelConfirm').checked=false;}
+function labelCalc(){
+  checked('labelConfirm','Etiket oranını, birimleri ve uygulama alanını doğrula.');
+  const source=needed('labelSource','Etiket / TDS kaynağını belirt.'),p=selected('labelProduct');
+  if($('labelMode').value==='dilution'){
+    const total=positive('dilutionTotal'),pct=positive('dilutionPct'),r=Core.dilution(total,pct);
+    result({title:'% hacim/hacim çalışma çözeltisi',amount:format(r.product)+' L ürün',rows:[['Ürün',p?.name||'Kullanıcının ürün etiketi'],['Son çözelti hacmi',format(total)+' L'],['Ürün oranı','%'+format(pct)+' hacim/hacim'],['Hazırlama esası','Son hacmi '+format(total)+' L’ye tamamlama'],['Kaynak',source]],formula:format(total)+' × '+format(pct)+' / 100 = '+format(r.product)+' L ürün',note:'Su miktarı doğrudan çıkarılarak kesin verilmez; karışım hacimleri toplamsal olmayabilir. Son hacme tamamlama ancak etiketteki hazırlama sırası ve yöntemine uygunsa kullanılmalıdır. Bu ürün yüzdesidir; etken madde yüzdesi değildir.'});return;
   }
+  const dose=positive('labelDose'),ref=positive('labelRef'),basis=$('labelBasis').value,target=basis==='pool'?positive('volume'):positive('labelTarget'),unit=$('labelUnit').value;
+  const purpose=needed('labelPurpose','Etiketteki periyodu veya uygulama amacını belirt.');
+  const r=Core.scale(dose,target,ref);
+  result({title:'Etiket dozunun ölçeklenmesi',amount:format(r)+' '+unit,rows:[['Ürün',p?.name||'Kullanıcının ürün etiketi'],['Referans',format(dose)+' '+unit+' / '+format(ref)+' '+bases[basis]],['Hedef',format(target)+' '+bases[basis]],['Periyot / amaç',purpose],['Kaynak',source]],formula:format(dose)+' × '+format(target)+' / '+format(ref)+' = '+format(r)+' '+unit,note:'Girdiğin etiket oranı ölçeklendi; kaynak bu araç tarafından otomatik doğrulanmadı. Birimler arasında yoğunluk varsayımı yapılmaz. Tablet sonucu yukarı yuvarlanmaz; tam tablet uygulamasını etiket belirler. Etiketteki süre, hazırlama ve tekrar ölçüm koşullarını izle.'});
 }
-window.matchMedia("(max-width: 850px)").addEventListener("change", placeResult);
-
-function showResult(title, lines, note="") {
-  const activeTab = document.querySelector(".tab:not([hidden])");
-  const focus = document.activeElement;
-  const focusedActions = focus?.closest(".actions");
-  resultAnchor = focusedActions && (activeTab?.contains(focusedActions) || focus.id === "dimCalc")
-    ? focusedActions
-    : activeTab?.querySelector(".actions");
-  placeResult();
-  $("resultTitle").textContent = title;
-  $("resultBody").innerHTML = lines.map(x => `<div class="result-line"><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join("");
-  $("resultNote").textContent = note;
-  $("resultCard").hidden = false;
-  // Keep the current scroll position while showing the nearby result.
-}
-
-function warn(msg) {
-  showResult("Kontrol gerekli", [["Durum", msg]], "Değerleri düzeltip tekrar hesaplayın.");
-}
-
-function requirePositiveVolume() {
-  const v = num("volume");
-  if (!Number.isFinite(v) || v <= 0) { warn("Havuz hacmi 0'dan büyük olmalı."); return null; }
-  return v;
-}
-
-function chlorineCalc() {
-  const volume = requirePositiveVolume(); if (!volume) return;
-  const current = num("chlorCurrent"), target = num("chlorTarget"), ph = num("chlorPh");
-  const product = $("chlorProduct").value;
-  if (![current,target,ph].every(Number.isFinite)) return warn("Klor ve pH değerlerini kontrol edin.");
-  if (current < 0 || target < 0) return warn("Klor değerleri negatif olamaz.");
-  if (ph < 6.5 || ph > 8.0) return warn("pH 6,5–8,0 aralığında olmalı.");
-  const delta = target - current;
-  if (delta <= 0) return warn("Hedef serbest klor mevcut değerden yüksek olmalı.");
-  const pureClG = volume * delta; // 1 ppm in 1 m3 = 1 g
-
-  if (product === "wtr56" || product === "wtr90") {
-    const pct = product === "wtr56" ? 56 : 90;
-    const g = CalcCore.granuleG(volume, current, target, pct/100);
-    showResult(`WTR %${pct} teorik klor dozu`, [
-      ["Klor farkı", `${fmt(delta)} ppm`],
-      ["Ürün", `${fmt(g,1)} g`],
-      ["Kilogram", `${fmt(g/1000,3)} kg`],
-    ], "Teorik aktif klor hesabıdır. Uygulama sonrası DPD ile tekrar ölçün; ürün etiketi önceliklidir.");
-    return;
-  }
-
-  if (product === "calhypo") {
-    // Agora: 100 m3 açık havuzda 1–3 ppm için 150–450 g.
-    const g = CalcCore.calhypoG(volume, current, target);
-    showResult("WTR CALHYPO üretici oranına göre", [
-      ["Klor farkı", `${fmt(delta)} ppm`],
-      ["Ürün", `${fmt(g,1)} g`],
-      ["Kilogram", `${fmt(g/1000,3)} kg`],
-    ], "Agora'daki 150 g / 100 m³ / 1 ppm yayınlanmış doz oranı ölçeklenmiştir.");
-    return;
-  }
-
-  if (product === "ks12") {
-    // User requirement: no density field. Treat 12% as 120 g active chlorine/L.
-    const liters = CalcCore.liquidChlorineL12(volume, current, target);
-    showResult("WTR KS / %12 sıvı klor", [
-      ["Klor farkı", `${fmt(delta)} ppm`],
-      ["Sıvı klor", `${fmt(liters,3)} L`],
-      ["Mililitre", `${fmt(liters*1000,0)} mL`],
-    ], "%12 aktif klor için yoğunluk alanı kullanılmadan 120 g/L varsayımı uygulanır. Ölçümle doğrulayın.");
-  }
-}
-
-function phCalc() {
-  const volume = requirePositiveVolume(); if (!volume) return;
-  const current = num("phCurrent"), target = num("phTarget");
-  const product = $("phProduct").value;
-  if (![current,target].every(Number.isFinite)) return warn("pH değerlerini kontrol edin.");
-  if (current < 6.5 || current > 8.0 || target < 6.5 || target > 8.0) return warn("pH değerleri 6,5–8,0 aralığında olmalı.");
-  const drop = current - target;
-  if (drop <= 0) return warn("Bu bölüm pH düşürme içindir; mevcut pH hedef pH'tan yüksek olmalı.");
-  const steps = drop / 0.1;
-
-  if (product === "toz") {
-    const kg = CalcCore.phKg(volume, current, target, 1.5);
-    showResult("WTR TOZ pH MINUS", [
-      ["pH düşüşü", fmt(drop,2)],
-      ["Ürün", `${fmt(kg,2)} kg`],
-      ["Gram", `${fmt(kg*1000,0)} g`],
-    ], "Üretici oranı: alkalinite 80–120 ppm iken 100 m³ için her 0,1 pH düşüşüne 1,5 kg.");
-  } else if (product === "alkaMinus") {
-    const kg = CalcCore.phKg(volume, current, target, 1.0);
-    showResult("WTR ALKA MINUS", [
-      ["pH düşüşü", fmt(drop,2)],
-      ["Ürün", `${fmt(kg,2)} kg`],
-      ["Yaklaşık litre (29 kg / 20 L ambalaj oranı)", `${fmt(kg/(29/20),2)} L`],
-    ], "Bu hesap daha önce sağladığınız fiziksel etiket oranını (1,0 kg / 100 m³ / 0,1 pH) korur. Agora’nın güncel çevrimiçi TDS’si ALK 80–120 ppm için 0,1 pH düşüşüne 500 g öneriyor ancak referans havuz hacmini açıkça yazmıyor. Sahadaki ambalaj etiketiyle doğrulamadan otomatik doz uygulamayın.");
-  } else if (product === "ls") {
-    const range = CalcCore.phKgRange(volume, current, target, 2.0, 2.5);
-    const lowKg = range.low;
-    const highKg = range.high;
-    showResult("WTR pH MINUS LIQUIDE S (LS)", [
-      ["pH düşüşü", fmt(drop,2)],
-      ["Alt doz", `${fmt(lowKg,2)} kg`],
-      ["Üst doz", `${fmt(highKg,2)} kg`],
-    ], "Daha önce sağladığınız LS etiketine göre 2,0–2,5 kg / 100 m³ / 0,1 pH aralığı ölçeklenmiştir.");
-  }
-}
-
-function maintenanceCalc() {
-  const volume = requirePositiveVolume(); if (!volume) return;
-  const product = $("maintProduct").value;
-  if (product === "clear") {
-    const L = CalcCore.poolRatio(volume, 1, 100);
-    showResult("WTR CLEAR rutin doz", [
-      ["Tek uygulama", `${fmt(L,2)} L`],
-      ["Sıklık", "Haftada 1–2 kez"],
-    ], "Üretici oranı: 100 m³ havuz suyu için 1 L. Uygulama sonrası filtre ters yıkaması önerilir.");
-  } else if (product === "clearTab") {
-    const {raw, whole} = CalcCore.clearTab(volume);
-    showResult("WTR CLEAR TAB rutin doz", [
-      ["Teorik oran", `${fmt(raw,2)} tablet`],
-      ["Tam tablet karşılığı", `${whole} tablet`],
-      ["Sıklık", "Haftada 1–2 kez"],
-    ], "Üretici oranı: 50 m³ için 1 tablet. Uygulamada ürün etiketini esas alın.");
-  } else if (product === "cf100") {
-    const water = num("filterWater");
-    if (!Number.isFinite(water) || water <= 0) return warn("Filtre içindeki su miktarını litre olarak girin.");
-    const productKg = CalcCore.cf100Kg(water);
-    showResult("WTR CF 100 filtre temizliği", [
-      ["Filtre içi su", `${fmt(water,1)} L`],
-      ["WTR CF 100", `${fmt(productKg,2)} kg`],
-      ["Oran", "Su miktarının %10'u"],
-    ], "WTR CF 100 kristal/katı üründür. Hesap, 1 L su ≈ 1 kg kabulüyle su kütlesinin %10'u olarak gösterilir. Üretici TDS ve saha prosedürü önceliklidir.");
-  } else if (product === "qac5" || product === "qac1") {
-    const solution = num("solutionVolume");
-    if (!Number.isFinite(solution) || solution <= 0) return warn("Hazırlanacak toplam solüsyon hacmini girin.");
-    const pct = product === "qac5" ? 5 : 1;
-    const {productL: concentrate} = CalcCore.solutionPercent(solution, pct);
-    showResult(product === "qac5" ? "WTR QAC 100 %5 solüsyon" : "WTR QAC 100 PLUS %1 solüsyon", [
-      ["Toplam solüsyon", `${fmt(solution,2)} L`],
-      ["Ürün", `${fmt(concentrate,3)} L`],
-      ["Su", `${fmt(CalcCore.solutionPercent(solution, pct).waterL,3)} L`],
-    ], product === "qac5" ? "Yüzey dezenfeksiyonu içindir; havuz suyuna klor alternatifi olarak dozlanmaz." : "Ayak havuzu hijyeni içindir; ana havuz suyuna dozlanmaz.");
-  } else if (product === "coolClean") {
-    const concentrate = num("coolProduct");
-    if (!Number.isFinite(concentrate) || concentrate <= 0) return warn("Kullanacağınız ürün miktarını litre olarak girin.");
-    showResult("WTR COOL CLEAN seyreltme", [
-      ["Ürün", `${fmt(concentrate,2)} L`],
-      ["En fazla ilave su (1:10)", `${fmt(CalcCore.coolClean(concentrate).maxWaterL,2)} L`],
-      ["Toplam karışım", `${fmt(CalcCore.coolClean(concentrate).maxTotalL,2)} L`],
-    ], "Üretici: ürün seyreltilmeden veya 1:10'a kadar suyla seyreltilerek kullanılabilir.");
-  } else if (product === "cellClean") {
-    showResult("WTR CELL CLEAN", [
-      ["Kullanım", "Seyreltilmeden"],
-      ["Uygulama", "Sökülmüş hücrenin metal plakaları"],
-    ], "Elektrik bağlantısı kesilmiş hücre için üretici talimatını izleyin; uygulama sonrası bol suyla durulayın.");
-  }
-}
-
-function calcDimensions() {
-  const l=num("len"), w=num("wid"), d=num("dep");
-  if (![l,w,d].every(Number.isFinite) || l<=0 || w<=0 || d<=0) return warn("Uzunluk, genişlik ve ortalama derinliği kontrol edin.");
-  const v=l*w*d;
-  $("volume").value = v.toFixed(2);
-  showResult("Hacim hesaplandı", [["Havuz hacmi", `${fmt(v,2)} m³`],["Yaklaşık su", `${fmt(v,2)} ton`]], "Dikdörtgen havuz için uzunluk × genişlik × ortalama derinlik.");
-}
-
-
-
-const MANUAL_BASIS_LABELS = {
-  pool: "m³ havuz suyu",
-  solution: "L solüsyon",
-  surface: "m² yüzey",
-  filter: "L filtre / sistem suyu",
-  equipment: "adet ekipman"
-};
-
-function manualProducts() {
-  return WTR_PRODUCTS.filter(p => !p.calc);
-}
-
-function populateManualProducts() {
-  const select = $("manualProduct");
-  if (!select) return;
-  select.innerHTML = manualProducts()
-    .map(p => `<option value="${p.sku}">${p.name} · ${p.sku}</option>`)
-    .join("");
-}
-
-function getGuide(sku) {
-  return AUTO_GUIDES[sku] || null;
-}
-
-function updateAutoGuideUI(runNow=true) {
-  const p = WTR_PRODUCTS.find(x => x.sku === $("manualProduct").value);
-  if (!p) return;
-  const g = getGuide(p.sku);
-
-  $("autoFilterWrap").hidden = !(g && g.mode === "filterRatio");
-  $("autoSolutionWrap").hidden = !(g && g.mode === "solutionRange");
-  $("manualOverride").open = false;
-
-  if (!g) {
-    $("autoStatus").innerHTML = `<strong>${p.name}</strong><br>Bu ürün için gömülü kural yok. Yedek manuel oranı kullanabilirsiniz.`;
-    return;
-  }
-
-  $("autoStatus").innerHTML =
-    `<strong>${p.name}</strong><br><span>${g.status || "Üretici talimatı yüklü"}</span>`;
-
-  if (runNow) autoGuideCalc();
-}
-
-function openManualForProduct(sku) {
-  setTab("manual");
-  $("manualProduct").value = sku;
-  updateAutoGuideUI(true);
-}
-
-function autoGuideCalc() {
-  const p = WTR_PRODUCTS.find(x => x.sku === $("manualProduct").value);
-  if (!p) return warn("Bir WTR ürünü seçin.");
-  const g = getGuide(p.sku);
-  if (!g) return warn("Bu ürün için gömülü üretici kuralı bulunamadı. Yedek manuel oranı kullanın.");
-
-  if (g.mode === "poolRatio") {
-    const volume = requirePositiveVolume(); if (!volume) return;
-    const dose = CalcCore.poolRatio(volume, g.dose, g.reference);
-    const lines = [
-      ["Havuz hacmi", `${fmt(volume,2)} m³`],
-      ["Üretici oranı", `${fmt(g.dose,2)} ${g.unit} / ${fmt(g.reference,2)} m³`],
-      ["Hesaplanan doz", `${fmt(dose,2)} ${g.unit}`]
-    ];
-    if (g.unit === "mL" && dose >= 1000) lines.push(["Litre karşılığı", `${fmt(dose/1000,3)} L`]);
-    if (g.frequency) lines.push(["Sıklık", g.frequency]);
-    showResult(`${p.name} · otomatik doz`, lines, g.note || "");
-    return;
-  }
-
-  if (g.mode === "filterRatio") {
-    const water = num("autoFilterWater");
-    if (!Number.isFinite(water) || water <= 0) return warn("Filtre içindeki su hacmini litre olarak girin.");
-    const dose = g.dose * water / g.reference;
-    const lines = [
-      ["Filtre suyu", `${fmt(water,1)} L`],
-      ["Üretici oranı", `${fmt(g.dose,2)} ${g.unit} / ${fmt(g.reference,0)} L filtre suyu`],
-      ["Hesaplanan ürün", `${fmt(dose,2)} ${g.unit}`],
-      ...(g.lines || [])
-    ];
-    showResult(`${p.name} · filtre hesabı`, lines, g.note || "");
-    return;
-  }
-
-  if (g.mode === "solutionRange") {
-    const total = num("autoSolutionVolume");
-    if (!Number.isFinite(total) || total <= 0) return warn("Hazırlanacak toplam çalışma solüsyonunu litre olarak girin.");
-    const range = CalcCore.solutionPercentRange(total, g.lowPct, g.highPct);
-    const low = range.lowProductL;
-    const high = range.highProductL;
-    showResult(`${p.name} · seyreltme`, [
-      ["Toplam solüsyon", `${fmt(total,2)} L`],
-      [`Ürün (%${g.lowPct})`, `${fmt(low,2)} L`],
-      [`Ürün (%${g.highPct})`, `${fmt(high,2)} L`],
-      ["Su aralığı", `${fmt(range.lowWaterL,2)}–${fmt(range.highWaterL,2)} L`]
-    ], g.note || "");
-    return;
-  }
-
-  if (g.mode === "fixed") {
-    const lines = [
-      ["Önerilen miktar", `${fmt(g.dose,0)} ${g.unit}`],
-      ...(g.frequency ? [["Sıklık", g.frequency]] : []),
-      ...(g.lines || [])
-    ];
-    showResult(`${p.name} · üretici talimatı`, lines, g.note || "");
-    return;
-  }
-
-  if (g.mode === "winter") {
-    const volume = requirePositiveVolume(); if (!volume) return;
-    const initial = 4 * volume / 100;
-    const boost = 2 * volume / 100;
-    showResult(`${p.name} · kış bakımı`, [
-      ["Havuz hacmi", `${fmt(volume,2)} m³`],
-      ["Sezon başlangıcı", `${fmt(initial,2)} L`],
-      ["Her ay takviye", `${fmt(boost,2)} L`],
-      ["Klor", "En az 1 ppm"],
-      ["Filtrasyon", "Haftada en az 1 tam sirkülasyon"]
-    ], g.note || "");
-    return;
-  }
-
-  if (g.mode === "instruction") {
-    const lines = [
-      ["Durum", g.status || "Üretici talimatı"],
-      ...(g.lines || [])
-    ];
-    showResult(`${p.name} · kullanım rehberi`, lines, g.note || "");
-    return;
-  }
-
-  warn("Bu ürün kuralı tanınmadı.");
-}
-
-function manualTargetFromBasis() {
-  const basis = $("manualBasis").value;
-  const target = $("manualTargetAmount");
-  const hint = $("manualTargetHint");
-  if (basis === "pool") {
-    const v = Number(String($("volume").value).replace(",", "."));
-    if (Number.isFinite(v) && v > 0) target.value = v;
-    hint.textContent = "Üstteki havuz hacmi otomatik kullanılır.";
-    target.readOnly = true;
-  } else {
-    target.readOnly = false;
-    const labels = {
-      solution: "Hazırlamak istediğiniz toplam solüsyon litresini girin.",
-      surface: "Uygulama yapılacak toplam yüzey alanını girin.",
-      filter: "Filtre veya sistem içindeki su miktarını litre olarak girin.",
-      equipment: "Uygulama yapılacak ekipman adedini girin."
-    };
-    hint.textContent = labels[basis] || "Hedef miktarı girin.";
-  }
-}
-
-function manualLabelCalc() {
-  const p = WTR_PRODUCTS.find(x => x.sku === $("manualProduct").value);
-  const dose = num("manualDoseAmount");
-  const ref = num("manualReferenceAmount");
-  const target = num("manualTargetAmount");
-  const unit = $("manualDoseUnit").value;
-  const basis = $("manualBasis").value;
-
-  if (!p) return warn("Bir WTR ürünü seçin.");
-  if (![dose, ref, target].every(Number.isFinite) || dose <= 0 || ref <= 0 || target <= 0) {
-    return warn("Etiket dozu, referans miktar ve hedef miktar 0'dan büyük olmalı.");
-  }
-
-  const result = dose * (target / ref);
-  const lines = [
-    ["Ürün", p.name],
-    ["Manuel etiket oranı", `${fmt(dose,3)} ${unit} / ${fmt(ref,3)} ${MANUAL_BASIS_LABELS[basis]}`],
-    ["Hedef", `${fmt(target,3)} ${MANUAL_BASIS_LABELS[basis]}`],
-    ["Hesaplanan ürün", `${fmt(result,3)} ${unit}`]
-  ];
-
-  if (unit === "g" && result >= 1000) lines.push(["Kilogram karşılığı", `${fmt(result/1000,3)} kg`]);
-  if (unit === "mL" && result >= 1000) lines.push(["Litre karşılığı", `${fmt(result/1000,3)} L`]);
-
-  showResult(`${p.name} · manuel etiket hesabı`, lines,
-    "Bu sonuç sizin girdiğiniz etiket oranının doğrusal ölçeklenmesidir.");
-}
-
-
-function populateDiverseyProducts() {
-  const select = $("diverseyProduct");
-  select.innerHTML = DIVERSEY_PRODUCTS.map((p, i) =>
-    `<option value="${i}">${p.name}${p.package ? ` · ${p.package}` : ""}</option>`
-  ).join("");
-  $("diverseyCount").textContent = `${DIVERSEY_PRODUCTS.length} ürün`;
-}
-
-function selectedDiversey() {
-  const i = Number($("diverseyProduct").value);
-  return DIVERSEY_PRODUCTS[i] || null;
-}
-
-function updateDiverseyUI(runNow=true) {
-  const p = selectedDiversey();
-  if (!p) return;
-
-  $("diverseyCategory").value = p.category;
-  $("diverseyProductNote").textContent = p.note || "";
-  $("diverseyProductNote").hidden = !p.note;
-
-  const needsChlor = p.mode === "activeChlorine";
-  const needsPhDrop = p.mode === "phDropFixed" || p.mode === "phDropRange";
-  const needsSolution = p.mode === "solutionRange";
-
-  $("diverseyChlorFields").hidden = !needsChlor;
-  $("diverseyPhDropFields").hidden = !needsPhDrop;
-  $("diverseySolutionFields").hidden = !needsSolution;
-
-  const automaticModes = new Set([
-    "activeChlorine","cahypo","phDropFixed","phDropRange",
-    "poolRatio","dualPoolRatio","solutionRange"
-  ]);
-
-  let statusText = "Ürün rehberi";
-  if (p.mode === "activeChlorine") statusText = `Teorik ppm hesabı · aktif klor %${p.active}`;
-  else if (p.mode === "cahypo") statusText = "Rutin + başlangıç/şok hacim dozu";
-  else if (p.mode === "phDropFixed") statusText = "Etiketten doğrulanmış pH doz hesabı";
-  else if (p.mode === "phDropRange") statusText = "Etiketten doğrulanmış pH doz aralığı";
-  else if (p.mode === "poolRatio") statusText = "Etiketten doğrulanmış hacim dozu";
-  else if (p.mode === "dualPoolRatio") statusText = "Etiketten doğrulanmış çift hacim dozu";
-  else if (p.mode === "solutionRange") statusText = "Etiketten doğrulanmış seyreltme hesabı";
-  else if (p.mode === "nonPoolInstruction") statusText = "Havuz dışı kullanım etiketi · otomatik havuz dozu yok";
-
-  $("diverseyStatus").innerHTML =
-    `<strong>${p.name}</strong><br><span>${statusText}${p.package ? ` · ${p.package}` : ""}</span>`;
-
-  if (runNow) diverseyCalc();
-}
-
-function diverseyCalc() {
-  const p = selectedDiversey();
-  if (!p) return warn("Bir Diversey ürünü seçin.");
-
-  if (p.mode === "activeChlorine") {
-    const volume = requirePositiveVolume(); if (!volume) return;
-    const current = num("diverseyChlorCurrent");
-    const target = num("diverseyChlorTarget");
-    const ph = num("diverseyPh");
-    if (![current,target,ph].every(Number.isFinite)) return warn("Diversey klor ve pH değerlerini kontrol edin.");
-    if (current < 0 || target < 0) return warn("Klor değerleri negatif olamaz.");
-    if (ph < 6.5 || ph > 8.2) return warn("pH değerini 6,5–8,2 aralığında girin.");
-    const delta = target-current;
-    if (delta <= 0) return warn("Hedef serbest klor mevcut değerden yüksek olmalı.");
-
-    const pureClG = volume * delta;
-    const productG = CalcCore.granuleG(volume, current, target, p.active/100);
-
-    showResult(`${p.name} · teorik klor dozu`, [
-      ["Havuz hacmi", `${fmt(volume,2)} m³`],
-      ["Klor farkı", `${fmt(delta,2)} ppm`],
-      ["Aktif klor ön ayarı", `%${fmt(p.active,1)}`],
-      ["Ürün", `${fmt(productG,1)} g`],
-      ["Kilogram", `${fmt(productG/1000,3)} kg`],
-      ...(p.lines || [])
-    ], p.note || "");
-    return;
-  }
-
-  if (p.mode === "cahypo") {
-    const volume = requirePositiveVolume(); if (!volume) return;
-    const ca = CalcCore.diverseyCaHypo(volume);
-    const routineG = ca.routineG;
-    const shockG = ca.shockG;
-
-    showResult(`${p.name} · Diversey hacim dozu`, [
-      ["Havuz hacmi", `${fmt(volume,2)} m³`],
-      ["Rutin kullanım", `${fmt(routineG,0)} g / gün`],
-      ["Başlangıç / şok", `${fmt(shockG,0)} g`],
-      ["Hedef serbest klor", "1–3 ppm"],
-      ...(p.lines || [])
-    ], "Diversey/Solenis havuz rehberindeki oranlar ölçeklenmiştir. Serbest kloru ölçerek ayarlayın; yerel ürün etiketi önceliklidir.");
-    return;
-  }
-
-  if (p.mode === "phDropFixed" || p.mode === "phDropRange") {
-    const volume = requirePositiveVolume(); if (!volume) return;
-    const current = num("diverseyPhCurrent");
-    const target = num("diverseyPhTarget");
-    if (![current,target].every(Number.isFinite)) return warn("pH değerlerini kontrol edin.");
-    if (current < 6.5 || current > 8.5 || target < 6.5 || target > 8.5) return warn("pH değerlerini 6,5–8,5 aralığında girin.");
-    const drop = current - target;
-    if (drop <= 0) return warn("Mevcut pH hedef pH'tan yüksek olmalı.");
-    const steps = drop / p.referencePh;
-
-    if (p.mode === "phDropFixed") {
-      const kg = CalcCore.phKg(volume, current, target, p.doseKg);
-      showResult(`${p.name} · etiket pH dozu`, [
-        ["Havuz hacmi", `${fmt(volume,2)} m³`],
-        ["pH düşüşü", fmt(drop,2)],
-        ["Etiket oranı", `${fmt(p.doseKg,2)} kg / ${p.referenceM3} m³ / ${p.referencePh} pH`],
-        ["Hesaplanan ürün", `${fmt(kg,2)} kg`],
-        ...(p.lines || [])
-      ], p.note || "");
-      return;
-    }
-
-    const ab = CalcCore.alkaBreak(volume, current, target);
-    const lowG = ab.lowKg * 1000;
-    const highG = ab.highKg * 1000;
-    const lines = [
-      ["Havuz hacmi", `${fmt(volume,2)} m³`],
-      ["pH düşüşü", fmt(drop,2)],
-      ["Etiket oranı", `${fmt(p.doseLowG,0)}–${fmt(p.doseHighG,0)} g / ${p.referenceM3} m³ / ${p.referencePh} pH`],
-      ["Alt doz", `${fmt(lowG/1000,2)} kg`],
-      ["Üst doz", `${fmt(highG/1000,2)} kg`]
-    ];
-    if (p.densityKgL) {
-      lines.push(["Yaklaşık hacim", `${fmt(ab.lowL,2)}–${fmt(ab.highL,2)} L`]);
-    }
-    lines.push(...(p.lines || []));
-    showResult(`${p.name} · etiket pH doz aralığı`, lines, p.note || "");
-    return;
-  }
-
-  if (p.mode === "poolRatio") {
-    const volume = requirePositiveVolume(); if (!volume) return;
-    const dose = CalcCore.poolRatio(volume, p.dose, p.referenceM3);
-    showResult(`${p.name} · etiket hacim dozu`, [
-      ["Havuz hacmi", `${fmt(volume,2)} m³`],
-      ["Etiket oranı", `${fmt(p.dose,2)} ${p.unit} / ${p.referenceM3} m³`],
-      ["Hesaplanan ürün", `${fmt(dose,2)} ${p.unit}`],
-      ...(p.frequency ? [["Sıklık", p.frequency]] : []),
-      ...(p.lines || [])
-    ], p.note || "");
-    return;
-  }
-
-  if (p.mode === "dualPoolRatio") {
-    const volume = requirePositiveVolume(); if (!volume) return;
-    const pcp = CalcCore.poolClearPlus(volume);
-    const primary = pcp.primaryL;
-    const routine = pcp.routineML;
-    showResult(`${p.name} · etiket hacim dozu`, [
-      ["Havuz hacmi", `${fmt(volume,2)} m³`],
-      ["Önerilen doz", `${fmt(primary,2)} ${p.primaryUnit}`],
-      ["Düzenli kullanım", `${fmt(routine,0)} ${p.routineUnit}`],
-      ...(p.lines || [])
-    ], p.note || "");
-    return;
-  }
-
-  if (p.mode === "solutionRange") {
-    const total = num("diverseySolutionVolume");
-    if (!Number.isFinite(total) || total <= 0) return warn("Hazırlanacak toplam temizlik çözeltisini litre olarak girin.");
-    const range = CalcCore.solutionPercentRange(total, p.lowPct, p.highPct);
-    const lowProduct = range.lowProductL;
-    const highProduct = range.highProductL;
-    showResult(`${p.name} · etiket seyreltme hesabı`, [
-      ["Toplam çözelti", `${fmt(total,2)} L`],
-      [`Ürün (%${p.lowPct})`, `${fmt(lowProduct,2)} L`],
-      [`Ürün (%${p.highPct})`, `${fmt(highProduct,2)} L`],
-      ["Su aralığı", `${fmt(range.lowWaterL,2)}–${fmt(range.highWaterL,2)} L`],
-      ...(p.lines || [])
-    ], p.note || "");
-    return;
-  }
-
-  showResult(`${p.name} · Diversey ürün rehberi`, [
-    ["Kategori", p.category],
-    ...(p.package ? [["Ambalaj", p.package]] : []),
-    ...(p.lines || [])
-  ], p.note || "");
-}
-
-function diverseyManualTargetSync() {
-  const basis = $("diverseyManualBasis").value;
-  const target = $("diverseyManualTarget");
-  if (basis === "pool") {
-    const volume = num("volume");
-    if (Number.isFinite(volume) && volume > 0) target.value = volume;
-    target.readOnly = true;
-    $("diverseyManualHint").textContent = "Üstteki havuz hacmi otomatik kullanılır.";
-  } else {
-    target.readOnly = false;
-    $("diverseyManualHint").textContent = "Etiketteki referans türüne göre hedef miktarı girin.";
-  }
-}
-
-function diverseyManualCalc() {
-  const p = selectedDiversey();
-  const dose = num("diverseyManualDose");
-  const ref = num("diverseyManualReference");
-  const target = num("diverseyManualTarget");
-  const unit = $("diverseyManualUnit").value;
-  const basis = $("diverseyManualBasis").value;
-
-  if (!p) return warn("Bir Diversey ürünü seçin.");
-  if (![dose, ref, target].every(Number.isFinite) || dose <= 0 || ref <= 0 || target <= 0) {
-    return warn("Diversey etiket oranı ve hedef miktar 0'dan büyük olmalı.");
-  }
-
-  const result = dose * target / ref;
-  const basisLabels = {
-    pool:"m³ havuz suyu",
-    solution:"L solüsyon",
-    surface:"m² yüzey",
-    filter:"L filtre/sistem suyu",
-    equipment:"adet ekipman"
-  };
-
-  const lines = [
-    ["Ürün", p.name],
-    ["Etiket oranı", `${fmt(dose,3)} ${unit} / ${fmt(ref,3)} ${basisLabels[basis]}`],
-    ["Hedef", `${fmt(target,3)} ${basisLabels[basis]}`],
-    ["Hesaplanan ürün", `${fmt(result,3)} ${unit}`]
-  ];
-  if (unit === "g" && result >= 1000) lines.push(["Kilogram karşılığı", `${fmt(result/1000,3)} kg`]);
-  if (unit === "mL" && result >= 1000) lines.push(["Litre karşılığı", `${fmt(result/1000,3)} L`]);
-
-  showResult(`${p.name} · manuel etiket hesabı`, lines,
-    "Bu sonuç yalnızca sizin girdiğiniz Diversey etiket oranının doğrusal ölçeklenmesidir.");
-}
-
-function renderDiverseyCatalog() {
-  const q = $("diverseySearch").value.trim().toLocaleLowerCase("tr-TR");
-  const items = DIVERSEY_PRODUCTS.filter(p => {
-    const hay = `${p.name} ${p.sku} ${p.category} ${p.package || ""}`.toLocaleLowerCase("tr-TR");
-    return !q || hay.includes(q);
-  });
-
-  $("diverseyGrid").innerHTML = items.map(p => {
-    const idx = DIVERSEY_PRODUCTS.indexOf(p);
-    const autoModes = new Set(["activeChlorine","cahypo","phDropFixed","phDropRange","poolRatio","dualPoolRatio","solutionRange"]);
-    const badge = p.mode === "activeChlorine"
-      ? '<span class="ok">Teorik ppm hesabı</span>'
-      : autoModes.has(p.mode)
-        ? '<span class="ok">Etiketten otomatik hesap</span>'
-        : p.mode === "nonPoolInstruction"
-          ? '<span class="muted">Havuz dışı etiket</span>'
-          : '<span class="label-active">Ürün rehberi</span>';
-    return `
-      <article class="product-card diversey-card">
-        <div class="badges"><span>${p.category}</span>${badge}</div>
-        <h3>${p.name}</h3>
-        <code>${p.sku}</code>
-        <div class="product-pack">${p.package || ""}</div>
-        <button class="mini-action" type="button" data-diversey-index="${idx}">Ürünü aç</button>
-      </article>`;
-  }).join("");
-
-  document.querySelectorAll("[data-diversey-index]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      setTab("diversey");
-      $("diverseyProduct").value = btn.dataset.diverseyIndex;
-      updateDiverseyUI(true);
-      document.getElementById("tab-diversey").scrollIntoView({behavior:"smooth",block:"start"});
-    });
-  });
-}
-
-
-function renderCatalog() {
-  const q = $("catalogSearch").value.trim().toLocaleLowerCase("tr-TR");
-  const cat = $("catalogCategory").value;
-  const items = WTR_PRODUCTS.filter(p => {
-    const hay = `${p.name} ${p.sku} ${p.category}`.toLocaleLowerCase("tr-TR");
-    return (!q || hay.includes(q)) && (!cat || p.category === cat);
-  });
-  const ready = items.filter(p => p.calc).length;
-  const autoGuide = items.filter(p => !p.calc && AUTO_GUIDES[p.sku]).length;
-  $("catalogCount").textContent = `${items.length} / ${WTR_PRODUCTS.length} ürün · ${ready} doğrudan hesap · ${autoGuide} otomatik ürün rehberi`;
-  $("catalogGrid").innerHTML = items.map(p => `
-    <article class="product-card">
-      <div class="badges">
-        <span>${p.category}</span>
-        ${p.calc
-          ? '<span class="ok">Doğrudan hesap</span>'
-          : AUTO_GUIDES[p.sku]
-            ? '<span class="label-active">Otomatik rehber</span>'
-            : '<span class="muted">Manuel etiket</span>'}
-      </div>
-      <h3>${p.name}</h3>
-      <code>${p.sku}</code>
-      ${p.calc ? '' : `<button class="mini-action" type="button" data-manual-sku="${p.sku}">Ürünü aç</button>`}
-    </article>`).join("");
-
-  document.querySelectorAll("[data-manual-sku]").forEach(btn => {
-    btn.addEventListener("click", () => openManualForProduct(btn.dataset.manualSku));
-  });
-}
-
-function setTab(name) {
-  $("resultCard").hidden = true;
-  document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab===name));
-  document.querySelectorAll(".tab").forEach(s => s.hidden = s.id !== `tab-${name}`);
-  if (name==="catalog") renderCatalog();
-  if (name==="diversey") renderDiverseyCatalog();
-}
-
-function toggleMaintenanceExtra() {
-  const p=$("maintProduct").value;
-  $("filterWaterWrap").hidden = p!=="cf100";
-  $("solutionVolumeWrap").hidden = !(p==="qac5" || p==="qac1");
-  $("coolProductWrap").hidden = p!=="coolClean";
-}
-
-
-function nearlyEqual(a,b,tol=1e-9){ return Math.abs(a-b) <= tol; }
-
-function runGoldenTests() {
-  const failures = [];
-  const assert = (name, actual, expected, tol=1e-9) => {
-    if (!nearlyEqual(actual, expected, tol)) failures.push(`${name}: ${actual} != ${expected}`);
-  };
-
-  assert("WTR56", CalcCore.granuleG(60,0.5,2,0.56), 160.71428571428572, 1e-9);
-  assert("WTR90", CalcCore.granuleG(60,0.5,2,0.90), 100);
-  assert("CALHYPO", CalcCore.calhypoG(60,0.5,2), 135);
-  assert("KS12_L", CalcCore.liquidChlorineL12(60,0.5,2), 0.75);
-  assert("WTR_TOZ_PH", CalcCore.phKg(60,7.8,7.4,1.5), 3.6, 1e-9);
-  assert("WTR_ALKA_MINUS", CalcCore.phKg(60,7.8,7.4,1.0), 2.4, 1e-9);
-  const ls = CalcCore.phKgRange(60,7.8,7.4,2.0,2.5);
-  assert("WTR_LS_LOW", ls.low, 4.8, 1e-9);
-  assert("WTR_LS_HIGH", ls.high, 6.0, 1e-9);
-  assert("WTR_CLEAR_L", CalcCore.poolRatio(60,1,100), 0.6);
-  const ct = CalcCore.clearTab(60);
-  assert("CLEAR_TAB_RAW", ct.raw, 1.2);
-  assert("CLEAR_TAB_WHOLE", ct.whole, 2);
-  assert("CLEAN_SHOCK_ML", CalcCore.poolRatio(60,50,25), 120);
-  assert("CLEAR200_ML", CalcCore.poolRatio(60,50,100), 30);
-  const w20 = CalcCore.w20(60);
-  assert("W20_INIT", w20.initialL, 2.4);
-  assert("W20_MONTHLY", w20.monthlyL, 1.2);
-  assert("SCALE_F_L", CalcCore.poolRatio(250,20,250), 20);
-  const snf = CalcCore.solutionPercentRange(10,20,25);
-  assert("SCALE_NF_PRODUCT_LOW", snf.lowProductL, 2);
-  assert("SCALE_NF_PRODUCT_HIGH", snf.highProductL, 2.5);
-  assert("SCALE_NF_WATER_LOW", snf.lowWaterL, 7.5);
-  assert("SCALE_NF_WATER_HIGH", snf.highWaterL, 8);
-  const q5 = CalcCore.solutionPercent(10,5);
-  assert("QAC100_PRODUCT", q5.productL, 0.5);
-  assert("QAC100_WATER", q5.waterL, 9.5);
-  const q1 = CalcCore.solutionPercent(10,1);
-  assert("QACPLUS_PRODUCT", q1.productL, 0.1);
-  assert("QACPLUS_WATER", q1.waterL, 9.9);
-  const cc = CalcCore.coolClean(1);
-  assert("COOL_WATER", cc.maxWaterL, 10);
-  assert("COOL_TOTAL", cc.maxTotalL, 11);
-  const dch = CalcCore.diverseyCaHypo(60);
-  assert("DV_CAHYPO_ROUTINE", dch.routineG, 150);
-  assert("DV_CAHYPO_SHOCK", dch.shockG, 300);
-  assert("DV_PH_DOWN", CalcCore.phKg(60,7.8,7.4,3), 7.2, 1e-9);
-  const ab = CalcCore.alkaBreak(60,7.8,7.4);
-  assert("ALKA_BREAK_LOW_KG", ab.lowKg, 1.2, 1e-9);
-  assert("ALKA_BREAK_HIGH_KG", ab.highKg, 3.6, 1e-9);
-  assert("ALKA_BREAK_LOW_L", ab.lowL, 0.8275862068965517, 1e-9);
-  assert("ALKA_BREAK_HIGH_L", ab.highL, 2.4827586206896552, 1e-9);
-  assert("FAST_FLOC", CalcCore.poolRatio(60,1,100), 0.6);
-  assert("SUPER_FLOC", CalcCore.poolRatio(60,1,100), 0.6);
-  const pcp = CalcCore.poolClearPlus(60);
-  assert("POOL_CLEAR_PLUS_PRIMARY", pcp.primaryL, 1.2);
-  assert("POOL_CLEAR_PLUS_ROUTINE_ML", pcp.routineML, 120);
-  const fc = CalcCore.solutionPercentRange(10,20,50);
-  assert("FILTER_CLEAN_PRODUCT_LOW", fc.lowProductL, 2);
-  assert("FILTER_CLEAN_PRODUCT_HIGH", fc.highProductL, 5);
-  assert("FILTER_CLEAN_WATER_LOW", fc.lowWaterL, 5);
-  assert("FILTER_CLEAN_WATER_HIGH", fc.highWaterL, 8);
-  assert("ALGAE_GUARD_KG", CalcCore.poolRatio(60,2,100), 1.2);
-  assert("DV_DICHLOR", CalcCore.granuleG(60,0.5,2,0.56), 160.71428571428572, 1e-9);
-  assert("DV_TRICHLOR", CalcCore.granuleG(60,0.5,2,0.90), 100);
-
-  const badge = $("selfTestBadge");
-  if (badge) {
-    if (failures.length === 0) {
-      badge.textContent = "Hesap motoru doğrulandı";
-      badge.classList.remove("bad");
-      badge.classList.add("ok");
-      badge.title = "Golden regresyon testlerinin tamamı geçti.";
-    } else {
-      badge.textContent = `Hesap doğrulama hatası (${failures.length})`;
-      badge.classList.remove("ok");
-      badge.classList.add("bad");
-      badge.title = failures.join("\n");
-    }
-  }
-  window.__GOLDEN_TEST_FAILURES__ = failures;
-  return failures;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Text fields keep the native decimal keyboard without number-spinner editing quirks.
-  // Select the existing value synchronously on focus; never steal focus or cancel touch events.
-  document.querySelectorAll('input[inputmode="decimal"]').forEach(input => {
-    input.addEventListener("focus", () => {
-      if (!input.readOnly) input.select();
-    });
-  });
-  document.querySelectorAll(".tab-btn").forEach(b => b.addEventListener("click", () => setTab(b.dataset.tab)));
-  $("chlorCalc").addEventListener("click", chlorineCalc);
-  $("phCalc").addEventListener("click", phCalc);
-  $("maintCalc").addEventListener("click", maintenanceCalc);
-  $("autoCalc").addEventListener("click", autoGuideCalc);
-  $("manualProduct").addEventListener("change", () => updateAutoGuideUI(true));
-  $("autoFilterWater").addEventListener("input", () => { const g=getGuide($("manualProduct").value); if (g?.mode==="filterRatio") autoGuideCalc(); });
-  $("autoSolutionVolume").addEventListener("input", () => { const g=getGuide($("manualProduct").value); if (g?.mode==="solutionRange") autoGuideCalc(); });
-  $("manualCalc").addEventListener("click", manualLabelCalc);
-  $("manualBasis").addEventListener("change", manualTargetFromBasis);
-  $("manualUsePool").addEventListener("click", () => { $("manualBasis").value = "pool"; manualTargetFromBasis(); });
-  $("volume").addEventListener("input", () => {
-    if ($("manualBasis").value === "pool") manualTargetFromBasis();
-    if ($("diverseyManualBasis").value === "pool") diverseyManualTargetSync();
-    const active = document.querySelector(".tab:not([hidden])")?.id;
-    const g = getGuide($("manualProduct").value);
-    if (active === "tab-manual" && g && ["poolRatio", "winter"].includes(g.mode)) autoGuideCalc();
-    const dp = selectedDiversey();
-    if (active === "tab-diversey" && dp && ["activeChlorine", "cahypo", "phDropFixed", "phDropRange", "poolRatio", "dualPoolRatio"].includes(dp.mode)) diverseyCalc();
-    if (["tab-chlor", "tab-ph", "tab-maint"].includes(active)) $("resultCard").hidden = true;
-  });
-  $("dimCalc").addEventListener("click", calcDimensions);
-  $("maintProduct").addEventListener("change", toggleMaintenanceExtra);
-  $("catalogSearch").addEventListener("input", renderCatalog);
-  $("catalogCategory").addEventListener("change", renderCatalog);
-  $("diverseyProduct").addEventListener("change", () => updateDiverseyUI(true));
-  $("diverseyPhCurrent").addEventListener("input", () => { const p=selectedDiversey(); if (p && (p.mode==="phDropFixed" || p.mode==="phDropRange")) diverseyCalc(); });
-  $("diverseyPhTarget").addEventListener("input", () => { const p=selectedDiversey(); if (p && (p.mode==="phDropFixed" || p.mode==="phDropRange")) diverseyCalc(); });
-  $("diverseySolutionVolume").addEventListener("input", () => { const p=selectedDiversey(); if (p?.mode==="solutionRange") diverseyCalc(); });
-  $("diverseyCalc").addEventListener("click", diverseyCalc);
-  $("diverseyManualBasis").addEventListener("change", diverseyManualTargetSync);
-  $("diverseyManualCalc").addEventListener("click", diverseyManualCalc);
-  $("diverseySearch").addEventListener("input", renderDiverseyCatalog);
-
-  [...new Set(WTR_PRODUCTS.map(p=>p.category))].sort((a,b)=>a.localeCompare(b,"tr")).forEach(c=>{
-    const o=document.createElement("option"); o.value=c; o.textContent=c; $("catalogCategory").appendChild(o);
-  });
-  populateManualProducts();
-  manualTargetFromBasis();
-  updateAutoGuideUI(false);
-  toggleMaintenanceExtra();
-  populateDiverseyProducts();
-  diverseyManualTargetSync();
-  updateDiverseyUI(false);
-  renderDiverseyCatalog();
-  renderCatalog();
-  runGoldenTests();
-});
-</script>
-</body>
-</html>
+function openProduct(index){$('labelProduct').value=String(index);$('labelSource').value='';$('labelDose').value='';$('labelPurpose').value='';$('labelConfirm').checked=false;$('labelMode').value='ratio';labelModeUI();setTab('label',true);}
+function renderCatalog(){const q=$('catalogSearch').value.trim().toLocaleLowerCase('tr-TR'),brand=$('catalogBrand').value;const items=PRODUCTS.filter(p=>(!brand||brand===p.brand)&&(!q||(p.name+' '+p.sku+' '+p.category).toLocaleLowerCase('tr-TR').includes(q)));$('catalogCount').textContent=items.length+' / '+PRODUCTS.length+' ürün · konsantrasyonlar güncel etiketten girilir';$('catalogGrid').innerHTML=items.map(p=>'<article class="product"><span class="brand">'+escapeHtml(p.brand)+' · ETİKET BİLGİSİ GEREKİR</span><h3>'+escapeHtml(p.name)+'</h3><p>'+escapeHtml(p.category)+'</p><p>'+escapeHtml(p.sku)+'</p><button type="button" class="secondary" data-product="'+PRODUCTS.indexOf(p)+'">Etiket hesabında kullan</button></article>').join('')||'<p class="muted">Bu aramada ürün bulunamadı.</p>';}
+// Every calculation input change invalidates the result; no stale dose remains visible.
+document.querySelector('main').addEventListener('input',e=>{if(e.target.matches('input,select')&&!['catalogSearch','catalogBrand'].includes(e.target.id))invalidate();});
+document.querySelector('main').addEventListener('change',e=>{if(e.target.matches('input,select')&&!['catalogSearch','catalogBrand'].includes(e.target.id))invalidate();});
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
+document.querySelector('[role=tablist]').addEventListener('keydown',e=>{const tabs=[...document.querySelectorAll('[role=tab]')],i=tabs.indexOf(document.activeElement);if(i<0)return;let next;if(e.key==='ArrowRight')next=(i+1)%tabs.length;else if(e.key==='ArrowLeft')next=(i-1+tabs.length)%tabs.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=tabs.length-1;else return;e.preventDefault();setTab(tabs[next].dataset.tab,true);});
+$('volume').addEventListener('input',volumeHint);
+$('dimensionCalc').addEventListener('click',e=>run(e,()=>{const l=positive('length'),w=positive('width'),d=positive('depth'),v=l*w*d;if(!Number.isFinite(v)||v<=0)throw Error('Hacim hesap sınırını aşıyor.');$('volume').value=String(Number(v.toPrecision(12))).replace('.',',');volumeHint();invalidate();result({title:'Dikdörtgen havuz hacmi',amount:format(v)+' m³',rows:[['Su hacmi',format(v*1000,0)+' L'],['Ortalama su derinliği',format(d)+' m']],formula:format(l)+' × '+format(w)+' × '+format(d)+' = '+format(v)+' m³',note:'Dikdörtgen plan ve girdi ortalama su derinliği esas alınmıştır. Denge tankı veya farklı geometriler dahil değildir.'});}));
+$('chlorProduct').addEventListener('change',changeChlorProduct);$('chlorForm').addEventListener('change',()=>{$('chlorConfirm').checked=false;chlorineUI();});$('chlorBasis').addEventListener('change',()=>{$('chlorConfirm').checked=false;chlorineUI();});$('chlorIdentity').addEventListener('change',()=>{$('chlorConfirm').checked=false;});
+$('chlorineForm').addEventListener('submit',e=>run(e,chlorineCalc));$('phForm').addEventListener('submit',e=>run(e,phCalc));$('labelForm').addEventListener('submit',e=>run(e,labelCalc));
+$('phPreset').addEventListener('change',phPresetUI);$('labelMode').addEventListener('change',labelModeUI);$('labelBasis').addEventListener('change',()=>{$('labelTarget').value='';$('labelConfirm').checked=false;syncLabelTarget();});$('labelProduct').addEventListener('change',()=>{$('labelSource').value='';$('labelDose').value='';$('labelPurpose').value='';$('labelConfirm').checked=false;});
+$('catalogSearch').addEventListener('input',renderCatalog);$('catalogBrand').addEventListener('change',renderCatalog);$('catalogGrid').addEventListener('click',e=>{const btn=e.target.closest('[data-product]');if(btn)openProduct(Number(btn.dataset.product));});$('printResult').addEventListener('click',()=>window.print());
+$('useClear').addEventListener('click',()=>{invalidate();$('labelMode').value='ratio';labelModeUI();$('labelProduct').value=String(PRODUCTS.findIndex(p=>p.sku==='WTR-CLR00020'));$('labelSource').value='Agora WTR CLEAR · https://www.agorakimya.com.tr/product/wtr-clear-20-kg-20-lt/';$('labelDose').value='1';$('labelUnit').value='L';$('labelBasis').value='pool';$('labelRef').value='100';$('labelPurpose').value='Tek uygulama · üretici sıklığı haftada 1–2';syncLabelTarget();$('labelConfirm').checked=false;});
+matchMedia('(max-width:760px)').addEventListener('change',placeResult);
+window.addEventListener('beforeprint',()=>document.querySelector('.workspace').append($('resultCard')));
+window.addEventListener('afterprint',placeResult);
+fillProducts('chlorProduct',PRODUCTS.filter(p=>p.category==='Klor / Dezenfeksiyon'&& !/Tabs/.test(p.name)));fillProducts('labelProduct',PRODUCTS);chlorineUI();syncLabelTarget();renderCatalog();
+
+</script></body></html>
